@@ -5,7 +5,6 @@ import {
     DialogDescription,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from "@/components/ui/dialog"
 
 
@@ -25,6 +24,7 @@ const Onchange = (open:boolean) => {
 }
 
 return(
+  <div className="h-full w-full">
     <Dialog open={isOpen} onOpenChange={Onchange}>
       <DialogContent>
     <DialogHeader>
@@ -33,11 +33,12 @@ return(
        {description}
       </DialogDescription>
     </DialogHeader>
-    <div>
+    <div className="h-full">
         {children}
     </div>
   </DialogContent>
 
     </Dialog>
+    </div>
 )
 }
