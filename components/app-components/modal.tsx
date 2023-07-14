@@ -24,7 +24,7 @@ const Onchange = (open:boolean) => {
 }
 
 return(
-  <div className="h-full w-full">
+  <div>
     <Dialog open={isOpen} onOpenChange={Onchange}>
       <DialogContent>
     <DialogHeader>
@@ -33,11 +33,10 @@ return(
        {description}
       </DialogDescription>
     </DialogHeader>
-    <div className="h-full">
+    <div>
         {children}
     </div>
   </DialogContent>
-
     </Dialog>
     </div>
 )

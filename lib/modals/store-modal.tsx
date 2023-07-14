@@ -4,6 +4,8 @@ import { Modal } from "../../components/app-components/modal";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "react-hot-toast";
+
 import {
   Form,
   FormControl,
@@ -12,14 +14,18 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import axios from "axios";
+import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
   name: z.string().min(1),
 });
 export const StoreModal = () => {
+  const [loading, setloading] = useState(false);
   const storeModal = useStoreModal();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -29,7 +35,17 @@ export const StoreModal = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    try {
+      setloading(true);
+      const datapush = await axios.post("/api/store", values);
+      if (datapush) {
+        window.location.assign(`/${datapush.data.id}`);
+      }
+    } catch (err) {
+      toast.error("Something went wrong");
+    } finally {
+      setloading(false);
+    }
   };
   return (
     <Modal
@@ -38,30 +54,40 @@ export const StoreModal = () => {
       isOpen={storeModal.isOpen}
       onClose={storeModal.onClose}
     >
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input placeholder="E-commerce" {...field} />
-              </FormControl>
-              <FormDescription>
-                
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="flex flex-col  space-y-2">
-        <Button variant={'outline'}>Cancel</Button>
-        <Button type="submit">Continue</Button>
-        </div>
-      </form>
-    </Form>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={loading}
+                    placeholder="E-commerce"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription></FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className={cn("flex  ")}>
+            <Button
+              disabled={loading}
+              variant={"outline"}
+              onClick={storeModal.onClose}
+            >
+              Cancel
+            </Button>
+            <Button disabled={loading} type="submit">
+              Continue
+            </Button>
+          </div>
+        </form>
+      </Form>
     </Modal>
   );
 };
