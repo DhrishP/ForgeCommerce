@@ -11,9 +11,9 @@ const MainNav = ({className,...props}:React.HtmlHTMLAttributes<HTMLElement>) => 
 
     const routes = [
         {
-            href:`/${params.storeId}/settings`,
+            href:`/${params.StoreId}/settings`,
             label:'Settings',
-            active:pathname === `/${params.storeId}/settings`
+            active:pathname === `/${params.StoreId}/settings`
         }
     ]
   return (
@@ -21,11 +21,11 @@ const MainNav = ({className,...props}:React.HtmlHTMLAttributes<HTMLElement>) => 
     <ul className={cn('flex items-center space-x-4 lg:space-x-6',className)}>
         {
             routes.map(route =>(
-                <>
-                <Link className={cn('font-medium text-sm transition-colors hover:text-primary dark:text-white ',
+               
+                <Link key={route.href} className={cn('font-medium text-sm transition-colors hover:text-primary dark:text-white ',
                 route.active? 'text-black dark:text-white':'text-muted-foreground'
                 )} href={route.href} id={route.href}>{route.label}</Link>
-                </>
+             
             ))
         }
     </ul>
