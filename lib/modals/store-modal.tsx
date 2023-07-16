@@ -74,7 +74,7 @@ export const StoreModal = () => {
               </FormItem>
             )}
           />
-          <div className={cn("flex  ")}>
+          <div className={cn("flex ")}>
             <Button
               disabled={loading}
               variant={"outline"}
@@ -82,7 +82,7 @@ export const StoreModal = () => {
             >
               Cancel
             </Button>
-            <Button disabled={loading} type="submit">
+            <Button className="hover:bg-white hover:text-black" disabled={loading} type="submit">
               Continue
             </Button>
           </div>
