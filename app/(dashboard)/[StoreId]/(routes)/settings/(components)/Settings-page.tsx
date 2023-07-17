@@ -21,6 +21,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { AlertModal } from "./Alert-modal";
+import { Separator } from "@/components/ui/separator";
+import AlertApi from "@/components/ui/alert-api";
 
 type SettingsProps = {
   name: string;
@@ -124,7 +126,11 @@ const SettingsPage = ({ name, id }: SettingsProps) => {
             </div>
           </form>
         </Form>
+    
+  
       </div>
+      <Separator   className="mx-6 mt-2 "/>
+      <AlertApi  title="hello" description="hello ji" variant="public"/>
     </>
   );
 };
