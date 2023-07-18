@@ -23,6 +23,7 @@ import { useRouter } from "next/navigation";
 import { AlertModal } from "./Alert-modal";
 import { Separator } from "@/components/ui/separator";
 import AlertApi from "@/components/ui/alert-api";
+import UseOrigin from "@/hooks/origin-client";
 
 type SettingsProps = {
   name: string;
@@ -35,6 +36,7 @@ const SettingsPage = ({ name, id }: SettingsProps) => {
   const [loading, setloading] = useState(false);
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const origin = UseOrigin()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -130,7 +132,7 @@ const SettingsPage = ({ name, id }: SettingsProps) => {
   
       </div>
       <Separator   className="mx-6 mt-2 "/>
-      <AlertApi  title="hello" description="hello ji" variant="public"/>
+      <AlertApi  title="NEXT_PUBLIC_API_URL" description={`${origin}/api/${id}`} variant="public"/>
     </>
   );
 };
