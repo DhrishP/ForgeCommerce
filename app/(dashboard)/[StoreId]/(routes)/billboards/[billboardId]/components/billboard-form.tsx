@@ -20,8 +20,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { useParams, useRouter } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
-import AlertApi from "@/components/ui/alert-api";
-import UseOrigin from "@/hooks/origin-client";
 import { BillBoard } from "@prisma/client";
 import ImageUpload from "@/components/ui/Image-upload";
 import { AlertModal } from "../../../settings/(components)/Alert-modal";
@@ -46,7 +44,6 @@ const BillBoardForm = ({ initialdata }: BillBoardFormProps) => {
   const [open, setOpen] = useState(false);
   const params = useParams();
   const router = useRouter();
-  const origin = UseOrigin();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: initialdata || {
@@ -61,11 +58,12 @@ const BillBoardForm = ({ initialdata }: BillBoardFormProps) => {
         await axios.patch(
           `/api/${params.StoreId}/billboards/${params.billboardId}`,
           values
-        )
+        );
       } else {
         await axios.post(`/api/${params.StoreId}/billboards`, values);
       }
       toast.success(toastMsg);
+      router.refresh()
       router.push(`/${params.StoreId}/billboards`);
     } catch (err) {
       toast.error(`${err}`);
@@ -81,30 +79,32 @@ const BillBoardForm = ({ initialdata }: BillBoardFormProps) => {
         `/api/${params.StoreId}/billboards/${params.billboardId}`
       );
       toast.success("Billboard successfully deleted");
+      router.refresh()
       router.push(`/${params.StoreId}/billboards`);
     } catch (err) {
-      toast.error("Please delete all the categories before deleting this first");
+      toast.error(
+        "Please delete all the categories before deleting this first"
+      );
     } finally {
       setloading(false);
     }
   };
   return (
     <>
-    <AlertModal
+      <AlertModal
         isOpen={open}
         loading={loading}
         onClose={() => {
           setOpen(false);
         }}
         onConfirm={Handledelete}
-        
       />
       <div className="flex  items-center justify-between pt-6 px-6">
         <div>
           <Heading title={title} description={description} />
         </div>
         {initialdata && (
-          <Button  variant={"destructive"} size={"icon"}>
+          <Button variant={"destructive"} size={"icon"}>
             <TrashIcon
               className="h-5 w-4"
               onClick={() => {

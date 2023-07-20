@@ -5,18 +5,18 @@ import { Copy, Server } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
 
-type AlertApiProps = {
+type ApiListProps = {
   title: string;
   description: string;
   variant: "public" | "admin";
 };
 
-const textMapping: Record<AlertApiProps["variant"], string> = {
+const textMapping: Record<ApiListProps["variant"], string> = {
   public: "Public",
   admin: "Admin",
 };
 
-const variantMap: Record<AlertApiProps["variant"], BadgeProps["variant"]> = {
+const variantMap: Record<ApiListProps["variant"], BadgeProps["variant"]> = {
   public: "secondary",
   admin: "destructive",
 };
@@ -25,7 +25,7 @@ const onCopy = (description: string) => {
   toast.success("Route copied");
 };
 
-const AlertApi = ({ title, description, variant }: AlertApiProps) => {
+const ApiBlock = ({ title, description, variant }: ApiListProps) => {
   return (
     <div className="px-6 pt-6">
       <Alert>
@@ -53,4 +53,4 @@ const AlertApi = ({ title, description, variant }: AlertApiProps) => {
   );
 };
 
-export default AlertApi;
+export default ApiBlock;
