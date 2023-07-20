@@ -22,8 +22,8 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { AlertModal } from "./Alert-modal";
 import { Separator } from "@/components/ui/separator";
-import AlertApi from "@/components/ui/alert-api";
 import UseOrigin from "@/hooks/origin-client";
+import ApiBlock from "@/components/ui/api-block";
 
 type SettingsProps = {
   name: string;
@@ -132,7 +132,7 @@ const SettingsPage = ({ name, id }: SettingsProps) => {
   
       </div>
       <Separator   className="mx-6 mt-2 "/>
-      <AlertApi  title="NEXT_PUBLIC_API_URL" description={`${origin}/api/${id}`} variant="public"/>
+      <ApiBlock  title="NEXT_PUBLIC_API_URL" description={`${origin}/api/${id}`} variant="public"/>
     </>
   );
 };

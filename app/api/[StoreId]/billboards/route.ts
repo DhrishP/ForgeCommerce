@@ -7,8 +7,8 @@ export async function GET(
   { params }: { params: { StoreId: string } }
 ) {
   try {
-    const { userId } = auth();
-    if (!userId) return NextResponse.json("Unauthenticated", { status: 404 });
+   
+    if(!params.StoreId) return  NextResponse.json("Store Id is required",{status:404})
     const FindBillboards = await prisma.billBoard.findMany({
         where:{
             StoreId:params.StoreId
