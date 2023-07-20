@@ -10,13 +10,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useParams, useRouter } from "next/navigation";
-import { FilteredDataProps } from "./TableColumn";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { AlertModal } from "../../settings/(components)/Alert-modal";
+import { CategoryColumn } from "./column";
 type CellActionsProps = {
-  data: FilteredDataProps;
+  data: CategoryColumn
 };
 
 const CellActions = ({ data }: CellActionsProps) => {
@@ -25,12 +25,12 @@ const CellActions = ({ data }: CellActionsProps) => {
   const params = useParams();
   const router = useRouter();
   const HandleEdit = () => {
-    router.push(`/${params.StoreId}/billboards/${data.id}`);
+    router.push(`/${params.StoreId}/categories/${data.id}`);
   };
   const Handledelete = async () => {
     try {
       setloading(true);
-      await axios.delete(`/api/${params.StoreId}/billboards/${data.id}`);
+      await axios.delete(`/api/${params.StoreId}/categories/${data.id}`);
       toast.success("Billboard successfully deleted");
       router.refresh();
     } catch (err) {

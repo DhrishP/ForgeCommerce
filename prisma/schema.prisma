@@ -11,20 +11,33 @@ datasource db {
 }
 
 model Store {
+  id         String       @id @default(cuid())
+  name       String
+  userId     String
+  billboard  BillBoard[]  @relation("StoretoBillboards")
+  categories Categories[] @relation("StoretoCategories")
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+}
+
+model BillBoard {
   id        String   @id @default(cuid())
-  name      String
-  userId    String
-  billboard BillBoard[] @relation("Billboards")
+  label     String
+  ImageUrl  String
+  StoreId   String
+  store     Store    @relation("StoretoBillboards", fields: [StoreId], references: [id])
+  categories Categories[] @relation("BillboardtoCategories")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model BillBoard {
-  id       String @id @default(cuid())
-  label    String
-  ImageUrl String
-  StoreId  String
-  store    Store  @relation("Billboards",fields: [StoreId],references: [id])
+model Categories {
+  id      String @id @default(cuid())
+  StoreId String
+  store   Store  @relation("StoretoCategories", fields: [StoreId], references: [id])
+  billboardId String
+  billboard BillBoard @relation("BillboardtoCategories",fields: [billboardId],references: [id])
+  name String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
