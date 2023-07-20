@@ -4,38 +4,33 @@ import Heading from "@/components/ui/heading";
 import { Plus } from "lucide-react";
 import React from "react";
 import { useParams, useRouter } from "next/navigation";
-import { BillBoard } from "@prisma/client";
+
 import { Separator } from "@/components/ui/separator";
 import { DataTable } from "../../../../../../components/ui/data-table";
-import { columns } from "./TableColumn";
+import { CategoryColumn, columns } from "./column";
 import ApiList from "../../../../../../components/ui/api-list";
 
-type billboardsprops ={
-  BillboardData :BillBoard[] 
+type CategoriesProps = {
+    CategoriesData : CategoryColumn[]
 }
-const Billboards = ({BillboardData}:billboardsprops) => {
+
+const Categories = ({CategoriesData}:CategoriesProps) => {
   const router = useRouter();
   const params = useParams();
-  const FilteredData = BillboardData.map((bill)=>(
-    {
-      label:bill.label,
-      createdAt:(bill.createdAt).toDateString(),
-      id:bill.id,
-      ImageUrl:bill.ImageUrl,
-    }
-  ))
+
+
   return (
     <>
     <div className="flex items-center justify-between">
       <div>
         <Heading
-          title={`Billboards(${BillboardData.length})`}
-          description="Create and manage billboards"
+          title={`Categories(${CategoriesData.length})`}
+          description="Create and manage Categories"
         />
       </div>
       <Button
         onClick={() => {
-          router.push(`/${params.StoreId}/billboards/new`);
+          router.push(`/${params.StoreId}/categories/new`);
         }}
         className="gap-x-2 hover:bg-secondary hover:text-primary"
       >
@@ -44,14 +39,14 @@ const Billboards = ({BillboardData}:billboardsprops) => {
       </Button>
     </div>
     <Separator/>
-      <DataTable searchKey="label" columns={columns} data={FilteredData}/>
+      <DataTable searchKey="label" columns={columns} data={CategoriesData}/>
       <div className="w-full mt-10 ml-2">
       <Heading title={'Api'} description="Api's to connected frontend and backend"/>
       <Separator/>
-      <ApiList Entityname="billboards" EntityIdname="billboardId"/>
+      <ApiList Entityname="categories" EntityIdname="{CategoriesId}"/>
       </div>
     </>
   );
 };
 
-export default Billboards;
+export default Categories;
