@@ -13,10 +13,10 @@ import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useState } from "react";
-import { AlertModal } from "../../settings/(components)/Alert-modal";
+import { AlertModal } from "../../../../../../components/app-components/Alert-modal";
 import { CategoryColumn } from "./column";
 type CellActionsProps = {
-  data: CategoryColumn
+  data: CategoryColumn;
 };
 
 const CellActions = ({ data }: CellActionsProps) => {
@@ -31,11 +31,11 @@ const CellActions = ({ data }: CellActionsProps) => {
     try {
       setloading(true);
       await axios.delete(`/api/${params.StoreId}/categories/${data.id}`);
-      toast.success("Billboard successfully deleted");
+      toast.success("Category successfully deleted");
       router.refresh();
     } catch (err) {
       toast.error(
-        "Please delete all the categories before deleting this first"
+        "Something went wrong"
       );
     } finally {
       setloading(false);
@@ -63,8 +63,9 @@ const CellActions = ({ data }: CellActionsProps) => {
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem
             className="cursor-pointer"
-            onClick={() => {navigator.clipboard.writeText(data.id);
-            toast.success("copied to clipboard")
+            onClick={() => {
+              navigator.clipboard.writeText(data.id);
+              toast.success("copied to clipboard");
             }}
           >
             <CopyIcon className="h-4 w-4 mr-2" />

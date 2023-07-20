@@ -17,7 +17,7 @@ const textMapping: Record<ApiListProps["variant"], string> = {
 };
 
 const variantMap: Record<ApiListProps["variant"], BadgeProps["variant"]> = {
-  public: "secondary",
+  public: "outline",
   admin: "destructive",
 };
 const onCopy = (description: string) => {
@@ -35,7 +35,7 @@ const ApiBlock = ({ title, description, variant }: ApiListProps) => {
           <Badge variant={variantMap[variant]}>{variant}</Badge>
         </AlertTitle>
         <AlertDescription className="mt-1 flex items-center justify-between">
-          <code className="relative rounded bg-muted px-[0.3rem] font-mono text-sm font-semibold">
+          <code className="relative rounded  bg-fuchsia-200 dark:bg-fuchsia-600  px-[0.3rem] font-mono text-sm font-semibold">
             {description}
           </code>
           <Button

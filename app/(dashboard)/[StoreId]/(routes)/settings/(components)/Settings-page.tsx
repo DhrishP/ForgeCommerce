@@ -20,7 +20,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { AlertModal } from "./Alert-modal";
+import { AlertModal } from "../../../../../../components/app-components/Alert-modal";
 import { Separator } from "@/components/ui/separator";
 import UseOrigin from "@/hooks/origin-client";
 import ApiBlock from "@/components/ui/api-block";
@@ -36,7 +36,7 @@ const SettingsPage = ({ name, id }: SettingsProps) => {
   const [loading, setloading] = useState(false);
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  const origin = UseOrigin()
+  const origin = UseOrigin();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -62,18 +62,17 @@ const SettingsPage = ({ name, id }: SettingsProps) => {
   };
 
   const HandleDelete = async () => {
-    try{
-        setloading(true)
-        await axios.delete(`/api/store/${id}`)
-        toast.success('Store successfully deleted')
-        router.push('/')
-
-    }catch(err){
-        toast.error('Please delete all the products first')
-    }finally{
-        setloading(false)
+    try {
+      setloading(true);
+      await axios.delete(`/api/store/${id}`);
+      toast.success("Store successfully deleted");
+      router.push("/");
+    } catch (err) {
+      toast.error("Please delete all the products first");
+    } finally {
+      setloading(false);
     }
-  }
+  };
   return (
     <>
       <AlertModal
@@ -83,7 +82,6 @@ const SettingsPage = ({ name, id }: SettingsProps) => {
           setOpen(false);
         }}
         onConfirm={HandleDelete}
-        
       />
       <div className="flex  items-center justify-between pt-6 px-6">
         <div>
@@ -93,7 +91,12 @@ const SettingsPage = ({ name, id }: SettingsProps) => {
           />
         </div>
         <Button variant={"destructive"} size={"icon"}>
-          <TrashIcon className="h-5 w-4" onClick={()=>{setOpen(true)}}/>
+          <TrashIcon
+            className="h-5 w-4"
+            onClick={() => {
+              setOpen(true);
+            }}
+          />
         </Button>
       </div>
       <div className="pl-6 w-1/3 flex items-start mt-10">
@@ -128,11 +131,13 @@ const SettingsPage = ({ name, id }: SettingsProps) => {
             </div>
           </form>
         </Form>
-    
-  
       </div>
-      <Separator   className="mx-6 mt-2 "/>
-      <ApiBlock  title="NEXT_PUBLIC_API_URL" description={`${origin}/api/${id}`} variant="public"/>
+      <Separator className="mx-6 mt-2 " />
+      <ApiBlock
+        title="NEXT_PUBLIC_API_URL"
+        description={`${origin}/api/${id}`}
+        variant="public"
+      />
     </>
   );
 };
