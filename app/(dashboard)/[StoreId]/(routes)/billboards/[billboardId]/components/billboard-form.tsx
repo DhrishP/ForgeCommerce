@@ -22,7 +22,7 @@ import { useParams, useRouter } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
 import { BillBoard } from "@prisma/client";
 import ImageUpload from "@/components/ui/Image-upload";
-import { AlertModal } from "../../../settings/(components)/Alert-modal";
+import { AlertModal } from "../../../../../../../components/app-components/Alert-modal";
 
 type BillBoardFormProps = {
   initialdata: BillBoard | null;
@@ -63,7 +63,7 @@ const BillBoardForm = ({ initialdata }: BillBoardFormProps) => {
         await axios.post(`/api/${params.StoreId}/billboards`, values);
       }
       toast.success(toastMsg);
-      router.refresh()
+      router.refresh();
       router.push(`/${params.StoreId}/billboards`);
     } catch (err) {
       toast.error(`${err}`);
@@ -79,7 +79,7 @@ const BillBoardForm = ({ initialdata }: BillBoardFormProps) => {
         `/api/${params.StoreId}/billboards/${params.billboardId}`
       );
       toast.success("Billboard successfully deleted");
-      router.refresh()
+      router.refresh();
       router.push(`/${params.StoreId}/billboards`);
     } catch (err) {
       toast.error(

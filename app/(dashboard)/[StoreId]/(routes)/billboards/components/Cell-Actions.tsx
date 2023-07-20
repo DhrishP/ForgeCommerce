@@ -14,7 +14,7 @@ import { FilteredDataProps } from "./TableColumn";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useState } from "react";
-import { AlertModal } from "../../settings/(components)/Alert-modal";
+import { AlertModal } from "../../../../../../components/app-components/Alert-modal";
 type CellActionsProps = {
   data: FilteredDataProps;
 };
@@ -63,8 +63,9 @@ const CellActions = ({ data }: CellActionsProps) => {
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem
             className="cursor-pointer"
-            onClick={() => {navigator.clipboard.writeText(data.id);
-            toast.success("copied to clipboard")
+            onClick={() => {
+              navigator.clipboard.writeText(data.id);
+              toast.success("copied to clipboard");
             }}
           >
             <CopyIcon className="h-4 w-4 mr-2" />
