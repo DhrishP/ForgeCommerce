@@ -8,7 +8,7 @@ import { CldUploadWidget } from "next-cloudinary";
 type ImageUploadProps = {
   disabled: boolean;
   onChange: (value: string) => void;
-  onRemove: () => void;
+  onRemove: (value:string) => void;
   values: string[];
 };
 const ImageUpload = ({
@@ -41,7 +41,7 @@ const ImageUpload = ({
                 variant={"destructive"}
                 size={"icon"}
                 onClick={() => {
-                  onRemove();
+                  onRemove(url);
                 }}
               >
                 <Trash className="h-5 w-4" />
