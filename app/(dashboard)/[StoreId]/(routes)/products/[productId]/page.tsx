@@ -1,8 +1,7 @@
 import prisma from "@/prisma/client";
-import React from "react";
-import ProductForm from "./components/product-form";
+import {ProductForm} from "./components/product-form";
 
-const ProductId = async ({
+const ProductIdPage = async ({
   params,
 }: {
   params: { productId: string; StoreId: string };
@@ -34,10 +33,10 @@ const ProductId = async ({
   return (
     <div className="flex flex-col ">
       <div className="flex-1 px-8 py-6">
-        <ProductForm initialdata={product} colors={colors} sizes={sizes} categories={categories} />
+        <ProductForm initialData={product} colors={colors} sizes={sizes} categories={categories} />
       </div>
     </div>
   );
 };
 
-export default ProductId;
+export default ProductIdPage;

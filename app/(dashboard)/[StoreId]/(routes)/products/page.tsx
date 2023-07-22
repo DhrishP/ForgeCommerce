@@ -27,7 +27,7 @@ const BillboardPage = async ({ params }: { params: { StoreId: string } }) => {
     categoryname: product.categories.name,
     size: product.size.name,
     color: product.color.value,
-    createdAt: product.createdAt.toDateString(),
+    createdAt: product.createdAt.toLocaleDateString(),
   }));
   return (
     <div className="flex flex-col">

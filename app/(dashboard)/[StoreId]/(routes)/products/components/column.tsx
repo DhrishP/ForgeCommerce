@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import { ColumnDef } from "@tanstack/react-table";
 import CellActions from "./Cell-Actions";
 
@@ -35,6 +34,14 @@ export const columns: ColumnDef<FilteredDataProps>[] = [
     header: "Price",
   },
   {
+    accessorKey: "size",
+    header: "Size",
+  },
+  {
+    accessorKey: "categoryname",
+    header: "Category",
+  },
+  {
     accessorKey: "color",
     header: "Color",
     cell: ({ row }) => (
@@ -46,14 +53,6 @@ export const columns: ColumnDef<FilteredDataProps>[] = [
         ></div>
       </div>
     ),
-  },
-  {
-    accessorKey: "size",
-    header: "Size",
-  },
-  {
-    accessorKey: "categoryname",
-    header: "Category",
   },
   {
     accessorKey: "createdAt",
