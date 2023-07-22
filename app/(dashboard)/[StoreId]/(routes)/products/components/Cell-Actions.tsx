@@ -25,17 +25,17 @@ const CellActions = ({ data }: CellActionsProps) => {
   const params = useParams();
   const router = useRouter();
   const HandleEdit = () => {
-    router.push(`/${params.StoreId}/billboards/${data.id}`);
+    router.push(`/${params.StoreId}/products/${data.id}`);
   };
   const Handledelete = async () => {
     try {
       setloading(true);
-      await axios.delete(`/api/${params.StoreId}/billboards/${data.id}`);
-      toast.success("Billboard successfully deleted");
+      await axios.delete(`/api/${params.StoreId}/products/${data.id}`);
+      toast.success("Product successfully deleted");
       router.refresh();
     } catch (err) {
       toast.error(
-        "Please delete all the categories before deleting this first"
+        "Something went wrong"
       );
     } finally {
       setloading(false);

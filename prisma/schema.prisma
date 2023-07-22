@@ -91,7 +91,7 @@ model Image {
   id        String   @id @default(cuid())
   productId String
   product   Products @relation("ProducttoImage", fields: [productId], references: [id], onDelete: Cascade)
-  Url       String   @unique
+  url       String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

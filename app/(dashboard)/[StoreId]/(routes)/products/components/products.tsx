@@ -38,7 +38,7 @@ const Products = ({ ProductsData }: ProductsProps) => {
         </Button>
       </div>
       <Separator />
-      <DataTable searchKey="label" columns={columns} data={ProductsData} />
+      <DataTable searchKey="name" columns={columns} data={ProductsData} />
       <div className="w-full mt-10 ml-2">
         <Heading
           title={"Api"}
