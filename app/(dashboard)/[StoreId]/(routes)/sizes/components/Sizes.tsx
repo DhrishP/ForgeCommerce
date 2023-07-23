@@ -38,7 +38,7 @@ const Sizes = ({ SizesData }: SizesProps) => {
         </Button>
       </div>
       <Separator />
-      <DataTable searchKey="label" columns={columns} data={SizesData} />
+      <DataTable searchKey="name" columns={columns} data={SizesData} />
       <div className="w-full mt-10 ml-2">
         <Heading
           title={"Api"}
