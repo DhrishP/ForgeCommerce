@@ -39,7 +39,7 @@ const Categories = ({CategoriesData}:CategoriesProps) => {
       </Button>
     </div>
     <Separator/>
-      <DataTable searchKey="label" columns={columns} data={CategoriesData}/>
+      <DataTable searchKey="name" columns={columns} data={CategoriesData}/>
       <div className="w-full mt-10 ml-2">
       <Heading title={'Api'} description="Api's to connected frontend and backend"/>
       <Separator/>

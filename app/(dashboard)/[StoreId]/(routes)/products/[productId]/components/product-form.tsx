@@ -30,7 +30,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 
 const formSchema = z.object({
   name: z.string().min(1),
-  Image: z.object({ url: z.string() }).array(),
+  Image: z.object({ url: z.string() }).array().min(1),
   price: z.coerce.number().min(1),
   CategoriesId: z.string().min(1),
   colorId: z.string().min(1),
@@ -64,7 +64,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 
   const title = initialData ? 'Edit product' : 'Create product';
   const description = initialData ? 'Edit a product.' : 'Add a new product';
-  const toastMessage = initialData ? 'Products updated.' : 'Products created.';
+  const toastMessage = initialData ? 'Product updated.' : 'Product created.';
   const action = initialData ? 'Save changes' : 'Create';
 
   const defaultValues = initialData ? {
@@ -110,7 +110,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
       await axios.delete(`/api/${params.StoreId}/products/${params.productId}`);
       router.refresh();
       router.push(`/${params.StoreId}/products`);
-      toast.success('Products deleted.');
+      toast.success('Product deleted.');
     } catch (error: any) {
       toast.error('Something went wrong.');
     } finally {

@@ -16,6 +16,11 @@ export const columns: ColumnDef<ColorsColumn>[] = [
     accessorKey: "name",
     header: "Name",
   },
+ 
+  {
+    accessorKey: "createdAt",
+    header: "Date",
+  },
   {
     accessorKey: "value",
     header: "Value",
@@ -28,10 +33,6 @@ export const columns: ColumnDef<ColorsColumn>[] = [
         ></div>
       </div>
     ),
-  },
-  {
-    accessorKey: "createdAt",
-    header: "Date",
   },
   {
     id: "actions",

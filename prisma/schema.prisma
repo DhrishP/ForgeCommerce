@@ -21,6 +21,7 @@ model Store {
   Products   Products[]   @relation("StoretoProducts")
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
+  order      Order[]      @relation("StoreToOrder")
 }
 
 model BillBoard {
@@ -69,22 +70,23 @@ model Colors {
 }
 
 model Products {
-  id           String     @id @default(cuid())
+  id           String      @id @default(cuid())
   StoreId      String
-  store        Store      @relation("StoretoProducts", fields: [StoreId], references: [id])
+  store        Store       @relation("StoretoProducts", fields: [StoreId], references: [id])
   CategoriesId String
-  categories   Categories @relation("ProducttoCategory", fields: [CategoriesId], references: [id])
+  categories   Categories  @relation("ProducttoCategory", fields: [CategoriesId], references: [id])
   sizesId      String
-  size         Sizes      @relation("ProducttoSizes", fields: [sizesId], references: [id])
+  size         Sizes       @relation("ProducttoSizes", fields: [sizesId], references: [id])
   colorId      String
-  color        Colors     @relation("ProducttoColor", fields: [colorId], references: [id])
+  color        Colors      @relation("ProducttoColor", fields: [colorId], references: [id])
   name         String
   price        Decimal
-  Featured     Boolean    @default(false)
-  Archived     Boolean    @default(false)
-  Image        Image[]    @relation("ProducttoImage")
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
+  Featured     Boolean     @default(false)
+  Archived     Boolean     @default(false)
+  Image        Image[]     @relation("ProducttoImage")
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  orderItem    OrderItem[] @relation("ProducttoOrderitem")
 }
 
 model Image {
@@ -94,4 +96,25 @@ model Image {
   url       String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id         String      @id @default(cuid())
+  StoreId    String // Foreign Key to Store
+  store      Store       @relation("StoreToOrder", fields: [StoreId], references: [id])
+  orderItems OrderItem[] // Relation to OrderItem model
+  isPaid     Boolean     @default(false)
+  phone      String      @default("")
+  address    String      @default("")
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+}
+
+// Intermediary for a many-to-many relationship
+model OrderItem {
+  id        String   @id @default(cuid())
+  orderId   String // Foreign Key to Order
+  order     Order    @relation(fields: [orderId], references: [id])
+  productId String // Foreign Key to Product
+  product   Products @relation("ProducttoOrderitem", fields: [productId], references: [id])
 }
