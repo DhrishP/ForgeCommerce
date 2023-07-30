@@ -21,7 +21,7 @@ import toast from "react-hot-toast";
 import { useParams, useRouter } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
 import { Sizes } from "@prisma/client";
-import { AlertModal } from "../../../../../../../components/app-components/Alert-modal";
+import { AlertModal } from "../../../../../../../components/modals-and-nav/Alert-modal";
 
 type SizesFormProps = {
   initialdata: Sizes | null;
@@ -46,8 +46,8 @@ const SizeForm = ({ initialdata }: SizesFormProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: initialdata || {
-      name:"",
-      value:""
+      name: "",
+      value: "",
     },
   });
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -74,9 +74,7 @@ const SizeForm = ({ initialdata }: SizesFormProps) => {
   const Handledelete = async () => {
     try {
       setloading(true);
-      await axios.delete(
-        `/api/${params.StoreId}/sizes/${params.sizesId}`
-      );
+      await axios.delete(`/api/${params.StoreId}/sizes/${params.sizesId}`);
       toast.success("Size successfully deleted");
       router.refresh();
       router.push(`/${params.StoreId}/sizes`);
@@ -90,13 +88,13 @@ const SizeForm = ({ initialdata }: SizesFormProps) => {
   };
   return (
     <>
-     <AlertModal 
-      isOpen={open} 
-      onClose={() => setOpen(false)}
-      onConfirm={Handledelete}
-      loading={loading}
-    />
-     <div className="flex items-center justify-between">
+      <AlertModal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        onConfirm={Handledelete}
+        loading={loading}
+      />
+      <div className="flex items-center justify-between">
         <Heading title={title} description={description} />
         {initialdata && (
           <Button
@@ -111,7 +109,10 @@ const SizeForm = ({ initialdata }: SizesFormProps) => {
       </div>
       <Separator />
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-8 w-full"
+        >
           <div className="md:grid md:grid-cols-3 gap-8">
             <FormField
               control={form.control}
@@ -120,7 +121,11 @@ const SizeForm = ({ initialdata }: SizesFormProps) => {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input disabled={loading} placeholder="Size name" {...field} />
+                    <Input
+                      disabled={loading}
+                      placeholder="Size name"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -133,7 +138,11 @@ const SizeForm = ({ initialdata }: SizesFormProps) => {
                 <FormItem>
                   <FormLabel>Value</FormLabel>
                   <FormControl>
-                    <Input disabled={loading} placeholder="Size value" {...field} />
+                    <Input
+                      disabled={loading}
+                      placeholder="Size value"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

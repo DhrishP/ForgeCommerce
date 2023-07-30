@@ -20,7 +20,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { AlertModal } from "../../../../../../components/app-components/Alert-modal";
+import { AlertModal } from "../../../../../../components/modals-and-nav/Alert-modal";
 import { Separator } from "@/components/ui/separator";
 import UseOrigin from "@/hooks/origin-client";
 import ApiBlock from "@/components/ui/api-block";

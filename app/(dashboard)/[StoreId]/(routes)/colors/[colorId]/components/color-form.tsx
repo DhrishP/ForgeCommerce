@@ -20,7 +20,7 @@ import toast from "react-hot-toast";
 import { useParams, useRouter } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
 import { Colors } from "@prisma/client";
-import { AlertModal } from "../../../../../../../components/app-components/Alert-modal";
+import { AlertModal } from "../../../../../../../components/modals-and-nav/Alert-modal";
 
 type ColorsFormProps = {
   initialdata: Colors | null;
@@ -150,7 +150,18 @@ const ColorForm = ({ initialdata }: ColorsFormProps) => {
                     </div>
                   </FormControl>
                   <FormMessage />
-                  <div className="text-sm font-light">You can also use <a href="https://www.color-hex.com/" target={'_blank'} className="font-semibold underline  cursor-pointer"> hex </a>values</div>
+                  <div className="text-sm font-light">
+                    You can also use{" "}
+                    <a
+                      href="https://www.color-hex.com/"
+                      target={"_blank"}
+                      className="font-semibold underline  cursor-pointer"
+                    >
+                      {" "}
+                      hex{" "}
+                    </a>
+                    values
+                  </div>
                 </FormItem>
               )}
             />

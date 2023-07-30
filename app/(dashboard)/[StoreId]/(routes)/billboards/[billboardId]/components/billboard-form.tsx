@@ -22,7 +22,7 @@ import { useParams, useRouter } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
 import { BillBoard } from "@prisma/client";
 import ImageUpload from "@/components/ui/Image-upload";
-import { AlertModal } from "../../../../../../../components/app-components/Alert-modal";
+import { AlertModal } from "../../../../../../../components/modals-and-nav/Alert-modal";
 
 type BillBoardFormProps = {
   initialdata: BillBoard | null;
