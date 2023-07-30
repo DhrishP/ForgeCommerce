@@ -14,7 +14,7 @@ import { FilteredDataProps } from "./TableColumn";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useState } from "react";
-import { AlertModal } from "../../../../../../components/app-components/Alert-modal";
+import { AlertModal } from "../../../../../../components/modals-and-nav/Alert-modal";
 type CellActionsProps = {
   data: FilteredDataProps;
 };

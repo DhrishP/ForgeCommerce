@@ -12,7 +12,7 @@ import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useState } from "react";
-import { AlertModal } from "../../../../../../components/app-components/Alert-modal";
+import { AlertModal } from "../../../../../../components/modals-and-nav/Alert-modal";
 import { ColorsColumn } from "./column";
 type CellActionsProps = {
   data: ColorsColumn;

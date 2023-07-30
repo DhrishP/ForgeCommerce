@@ -1,6 +1,6 @@
 "use client";
 
-import { Modal } from "@/components/app-components/modal";
+import { Modal } from "@/components/modals-and-nav/modal";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 

@@ -13,7 +13,7 @@ import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useState } from "react";
-import { AlertModal } from "../../../../../../components/app-components/Alert-modal";
+import { AlertModal } from "../../../../../../components/modals-and-nav/Alert-modal";
 import { CategoryColumn } from "./column";
 type CellActionsProps = {
   data: CategoryColumn;
@@ -34,9 +34,7 @@ const CellActions = ({ data }: CellActionsProps) => {
       toast.success("Category successfully deleted");
       router.refresh();
     } catch (err) {
-      toast.error(
-        "Something went wrong"
-      );
+      toast.error("Something went wrong");
     } finally {
       setloading(false);
       setOpen(false);
