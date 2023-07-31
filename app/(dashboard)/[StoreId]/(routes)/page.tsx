@@ -2,16 +2,17 @@ import getGraphdata from "@/components/overview-actions/get-graphdata";
 import getProducts from "@/components/overview-actions/get-products";
 import getRevenue from "@/components/overview-actions/get-revenue";
 import getSales from "@/components/overview-actions/get-sales";
+import getUserinfo from "@/components/overview-actions/get-userinfo";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import Heading from "@/components/ui/heading";
 import OverviewGraph from "@/components/ui/overview-graph";
+import Sales from "@/components/ui/recent-sales";
 import { Separator } from "@/components/ui/separator";
 import { formatter } from "@/lib/utils";
 import { CreditCard, DollarSign, Shirt } from "lucide-react";
@@ -22,8 +23,9 @@ const Dashboard = async ({ params }: { params: { StoreId: string } }) => {
   const AvailProducts = await getProducts(params.StoreId);
   const Totalrevenue = await getRevenue(params.StoreId);
   const GraphData = await getGraphdata(params.StoreId)
+  const SalesData = await getUserinfo(params.StoreId)
   return (
-    <div className="px-4 py-6 md:px-6 lg:px-8 w-full h-full">
+    <div className="px-4 py-2 md:px-6 lg:px-8 w-full h-full">
       <Heading title="Dashboard" description="Overview of your store" />
       <Separator />
       <div className="grid sm:grid-cols-3 w-full gap-6 mt-2 ">
@@ -71,12 +73,12 @@ const Dashboard = async ({ params }: { params: { StoreId: string } }) => {
           </Card>
         </div>
       </div>
-      <div className="grid md:grid-cols-5 md:mt-12 mt-5">
-          <div className="col-span-3">
+      <div className="grid lg:grid-cols-6 gap-6 md:mt-12 mt-5">
+          <div className="lg:col-span-4  ">
             <OverviewGraph data={GraphData}/>
           </div>
-          <div className="col-span-2">
-            CustomerReport
+          <div className="md:col-span-2 hidden lg:block">
+            <Sales data={SalesData}/>
           </div>
       </div>
     </div>

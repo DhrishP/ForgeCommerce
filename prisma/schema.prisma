@@ -103,6 +103,8 @@ model Order {
   StoreId    String // Foreign Key to Store
   store      Store       @relation("StoreToOrder", fields: [StoreId], references: [id])
   orderItems OrderItem[] // Relation to OrderItem model
+  name       String      @default("Lorem ipsum")
+  Email      String      @default("loremipsum@random.com")
   isPaid     Boolean     @default(false)
   phone      String      @default("")
   address    String      @default("")

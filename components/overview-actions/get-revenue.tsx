@@ -1,6 +1,6 @@
 import prisma from "@/prisma/client";
 
-export default async function (StoreId: string) {
+export default async function getRevenue(StoreId: string) {
   const orders = await prisma.order.findMany({
     where: {
       StoreId,
