@@ -4,6 +4,7 @@ import MainNav from './MainNav'
 import StoreDropdown from './StoreDropdown'
 import { redirect } from 'next/navigation'
 import prisma from '@/prisma/client'
+import { ThemeButton } from './theme-button'
 
 
 const Navbar = async () => {
@@ -26,7 +27,8 @@ const Navbar = async () => {
         </div>
 
     </div>
-    <div>
+    <div className='flex items-center space-x-4'>
+        <ThemeButton/>
         <UserButton afterSignOutUrl='/'/>
     </div>
    </div>

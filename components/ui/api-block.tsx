@@ -35,7 +35,7 @@ const ApiBlock = ({ title, description, variant }: ApiListProps) => {
           <Badge variant={variantMap[variant]}>{variant}</Badge>
         </AlertTitle>
         <AlertDescription className="mt-1 flex items-center justify-between">
-          <code className="relative text-xs md:text-xs  lg:text-sm rounded  bg-fuchsia-200 dark:bg-fuchsia-600  px-[0.3rem] font-mono font-semibold">
+          <code className="relative text-xs md:text-xs  lg:text-sm rounded  bg-fuchsia-200 dark:bg-fuchsia-500 dark:text-black  px-[0.3rem] font-mono font-semibold">
             {description}
           </code>
           <Button
