@@ -1,5 +1,10 @@
 ## This is the backend part of the project using API to display data on the store
 #### It is an API providing all the necessary data to [ecomm-store](https://github.com/dhrishP/ecomm-store)
+ ## Dummy Email and password for Demo
+1. _Email_:- trexturbo55@gmail.com
+1. _password_ :- Trex!!@@##
+
+#### ⭐The changes made here can be seen [here](https://ecomm-store-mocha.vercel.app/)
 
 #### Features:-
 1. Beautiful minimalistic ui by [Shadcn](https://ui.shadcn.com/)
@@ -21,7 +26,4 @@
 1. [axios](https://www.npmjs.com/package/axios)
 1. [zustand](https://docs.pmnd.rs/zustand/getting-started/introduction)
 
- ## Dummy Email and password for Demo
-1. _Email_:- trexturbo55@gmail.com
-1. _password_ :- Trex!!@@##  
-#### ⭐The changes made here can be seen [here](https://ecomm-store-mocha.vercel.app/)
+
