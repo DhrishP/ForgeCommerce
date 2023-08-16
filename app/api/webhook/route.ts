@@ -3,8 +3,21 @@ import { headers } from "next/headers";
 import { stripe } from "@/lib/stripe";
 import prisma from "@/prisma/client";
 import { NextResponse } from "next/server";
+import nodemailer from "nodemailer";
+import Content from "./(components)/content";
+const email = process.env.NODEMAILER_EMAIL;
+const pass = process.env.NODEMAILER_PASSWORD;
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: email,
+    pass,
+  },
+});
 
 export async function POST(req: Request) {
+  const content = Content();
   const body = await req.text();
   const signature = headers().get("Stripe-Signature") as string;
   let event: Stripe.Event;
@@ -49,7 +62,6 @@ export async function POST(req: Request) {
       },
     });
     const productIds = order.orderItems.map((item) => item.productId);
-
     await prisma.products.updateMany({
       where: {
         id: {
@@ -60,6 +72,16 @@ export async function POST(req: Request) {
         Archived: true,
       },
     });
+    const isTRUE = await transporter.sendMail({
+      from: email,
+      to: session.customer_details?.email
+        ? session.customer_details.email
+        : "trexturbo55@gmail.com",
+      text: "Something went wrong with your order",
+      html: content,
+      subject: "Your Stripe payment was successful",
+    });
+    
   }
   return NextResponse.json({}, { status: 200 });
 }
