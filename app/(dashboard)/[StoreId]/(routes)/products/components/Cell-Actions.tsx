@@ -1,5 +1,12 @@
 "use client";
-import { CopyIcon, Edit3Icon, MoreHorizontal, Trash2 } from "lucide-react";
+import {
+  ArchiveRestore,
+  CopyIcon,
+  Edit3Icon,
+  Magnet,
+  MoreHorizontal,
+  Trash2,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -32,6 +39,36 @@ const CellActions = ({ data }: CellActionsProps) => {
       setloading(true);
       await axios.delete(`/api/${params.StoreId}/products/${data.id}`);
       toast.success("Product successfully deleted");
+      router.refresh();
+    } catch (err) {
+      toast.error("Something went wrong");
+    } finally {
+      setloading(false);
+      setOpen(false);
+    }
+  };
+  const HandleFeature = async () => {
+    try {
+      await axios.patch(`/api/${params.StoreId}/products/${data.id}`, {
+        featured: true,
+        archived: false,
+      });
+      toast.success("Product successfully featured");
+      router.refresh();
+    } catch (err) {
+      toast.error("Something went wrong");
+    } finally {
+      setloading(false);
+      setOpen(false);
+    }
+  };
+  const HandleArchive = async () => {
+    try {
+      await axios.patch(`/api/${params.StoreId}/products/${data.id}`, {
+        archived: true,
+        featured: false,
+      });
+      toast.success("Product successfully archived");
       router.refresh();
     } catch (err) {
       toast.error("Something went wrong");
@@ -87,6 +124,24 @@ const CellActions = ({ data }: CellActionsProps) => {
           >
             <Trash2 className="h-4 w-4 mr-2" />
             Delete
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              HandleFeature();
+            }}
+            className="cursor-pointer"
+          >
+            <Magnet className="h-4 w-4 mr-2" />
+            Feature
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              HandleArchive();
+            }}
+            className="cursor-pointer"
+          >
+            <ArchiveRestore className="h-4 w-4 mr-2" />
+            Archive
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

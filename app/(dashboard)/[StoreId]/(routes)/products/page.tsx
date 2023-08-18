@@ -17,7 +17,7 @@ const BillboardPage = async ({ params }: { params: { StoreId: string } }) => {
       updatedAt: "desc",
     },
   });
-
+// name, price, CategoriesId, Image, colorId, sizesId, Featured, Archived
   const FilteredData = FindProduct.map((product) => ({
     id: product.id,
     name: product.name,

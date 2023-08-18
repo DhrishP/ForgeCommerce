@@ -3,21 +3,13 @@ import { headers } from "next/headers";
 import { stripe } from "@/lib/stripe";
 import prisma from "@/prisma/client";
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
-import Content from "./(components)/content";
-const email = process.env.NODEMAILER_EMAIL;
-const pass = process.env.NODEMAILER_PASSWORD;
+// import { Resend } from "resend";
+// import StripeWelcomeEmail from "@/lib/email";
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: email,
-    pass,
-  },
-});
+//SOME THINGS ARE COMMENTED FOR FUTURE USE AFTER PURCHASE OF DOMAIN
 
 export async function POST(req: Request) {
-  const content = Content();
+  // const resend = new Resend(process.env.RESEND_SECRET as string);
   const body = await req.text();
   const signature = headers().get("Stripe-Signature") as string;
   let event: Stripe.Event;
@@ -72,16 +64,15 @@ export async function POST(req: Request) {
         Archived: true,
       },
     });
-    const isTRUE = await transporter.sendMail({
-      from: email,
-      to: session.customer_details?.email
-        ? session.customer_details.email
-        : "trexturbo55@gmail.com",
-      text: "Something went wrong with your order",
-      html: content,
-      subject: "Your Stripe payment was successful",
-    });
-    
+
+    // await resend.emails.send({
+    //   from: "trexturbo55@gmail.com",
+    //   to: session.customer_details?.email
+    //     ? session.customer_details.email
+    //     : "trexturbo55@gmail.com",
+    //   react: StripeWelcomeEmail(),
+    //   subject: "Stripe Confirmation",
+    // });
   }
   return NextResponse.json({}, { status: 200 });
 }

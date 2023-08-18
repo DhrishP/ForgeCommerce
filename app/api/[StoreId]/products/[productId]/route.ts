@@ -71,7 +71,7 @@ export async function DELETE(
 };
 
 
-export async function PATCH(
+export async function PUT(
   req: Request,
   { params }: { params: { productId: string, StoreId: string } }
 ) {
@@ -164,3 +164,39 @@ export async function PATCH(
     return new NextResponse("Internal error", { status: 500 });
   }
 };
+
+export async function PATCH(req:Request, { params }: { params: { productId: string, StoreId: string } }){
+     const { userId } = auth();
+     const { featured, archived } = await req.json();
+      if (!userId) {
+        return new NextResponse("Unauthenticated", { status: 403 });
+      }
+      if (!params.productId) {
+        return new NextResponse("Product id is required", { status: 400 });
+      }
+      if(!(featured && !archived || archived && !featured)) return NextResponse.json({message: 'Invalid request'},{status: 400})
+      if (featured && !archived) {
+        const products = await prisma.products.update({
+          where: {
+            id: params.productId
+          },
+          data: {
+            Featured: featured,
+          },
+        });
+        return NextResponse.json(products);
+      }
+      if(archived && !featured){
+        const products = await prisma.products.update({
+          where: {
+            id: params.productId
+          },
+          data: {
+            Archived: archived,
+          },
+        });
+        return NextResponse.json(products);
+      }
+
+     
+}

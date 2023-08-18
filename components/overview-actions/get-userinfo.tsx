@@ -16,6 +16,7 @@ export default async function getUserinfo(StoreId: string) {
     orderBy: {
       createdAt: "desc",
     },
+      take:4,
   });
 
   const userData = userInfo.map((user) => ({
