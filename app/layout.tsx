@@ -9,8 +9,8 @@ import { ToastProvider } from "@/providers/toast-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Ecomm_Admin",
-  description: "Admin page for supporting e-commerce pages",
+  title: "ForgeCommerce",
+  description: "Admin page for making cool , scalable and production ready e-commerce stores with ForgeCommerce api",
 };
 
 export default function RootLayout({

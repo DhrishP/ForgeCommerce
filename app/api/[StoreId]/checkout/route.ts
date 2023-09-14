@@ -62,8 +62,14 @@ export async function POST(
     },
   });
 
+  const coupon_code = await stripe.coupons.create({
+    percent_off:10,
+    duration:"repeating",
+    id:"10OFF"
+  });
   const session = await stripe.checkout.sessions.create({
     line_items: items,
+    discounts:[{coupon:coupon_code.id}],
     mode: "payment",
     billing_address_collection: "required",
     phone_number_collection: {
