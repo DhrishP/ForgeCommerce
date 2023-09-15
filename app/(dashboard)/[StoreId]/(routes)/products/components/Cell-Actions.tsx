@@ -14,6 +14,10 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useParams, useRouter } from "next/navigation";
@@ -62,6 +66,21 @@ const CellActions = ({ data }: CellActionsProps) => {
       setOpen(false);
     }
   };
+  const HandleDeFeature = async () =>{
+    try {
+      await axios.patch(`/api/${params.StoreId}/products/${data.id}`, {
+        featured: true,    //USING TRUE HERE INSTEAD OF FALSE CUZ THE FALSE ONE IS USED IN HANDLEARCHIVE SO WE DE-FEATURE A PRODUCT WHEN BOTH ARE TRUE
+        archived: true,  
+      });
+      toast.success("Product successfully De-featured");
+      router.refresh();
+    } catch (err) {
+      toast.error("Something went wrong");
+    } finally {
+      setloading(false);
+      setOpen(false);
+    }
+  }
   const HandleArchive = async () => {
     try {
       await axios.patch(`/api/${params.StoreId}/products/${data.id}`, {
@@ -77,6 +96,18 @@ const CellActions = ({ data }: CellActionsProps) => {
       setOpen(false);
     }
   };
+  const HandleDearchive = async () => {
+    try {
+      await axios.patch(`/api/${params.StoreId}/products/${data.id}`, {
+        archived: false,
+        featured: false,
+      });
+      toast.success("Product successfully dearchived");
+      router.refresh();
+    } catch (error) {
+      toast.error("Something went wrong");
+    }
+  }
   return (
     <>
       <AlertModal
@@ -125,24 +156,42 @@ const CellActions = ({ data }: CellActionsProps) => {
             <Trash2 className="h-4 w-4 mr-2" />
             Delete
           </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => {
-              HandleFeature();
-            }}
-            className="cursor-pointer"
-          >
-            <Magnet className="h-4 w-4 mr-2" />
+          <DropdownMenuSub>
+           <DropdownMenuSubTrigger>
+            <Magnet className="h-4 w-4 mr-2"/>
             Feature
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => {
-              HandleArchive();
-            }}
-            className="cursor-pointer"
-          >
-            <ArchiveRestore className="h-4 w-4 mr-2" />
+           </DropdownMenuSubTrigger>
+           <DropdownMenuPortal>
+            <DropdownMenuSubContent className="cursor-pointer">
+              <DropdownMenuItem onClick={()=>{
+                HandleFeature()
+              }}>
+                Feature
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={()=>{HandleDeFeature()}}>
+                De-Feature
+              </DropdownMenuItem>
+            </DropdownMenuSubContent>
+           </DropdownMenuPortal>
+         </DropdownMenuSub>
+         <DropdownMenuSub>
+           <DropdownMenuSubTrigger>
+            <ArchiveRestore className="h-4 w-4 mr-2"/>
             Archive
-          </DropdownMenuItem>
+           </DropdownMenuSubTrigger>
+           <DropdownMenuPortal>
+            <DropdownMenuSubContent className="cursor-pointer">
+              <DropdownMenuItem onClick={()=>{
+                HandleArchive()
+              }}>
+                Archive
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={()=>{HandleDearchive()}}>
+                De-Archive
+              </DropdownMenuItem>
+            </DropdownMenuSubContent>
+           </DropdownMenuPortal>
+         </DropdownMenuSub>
         </DropdownMenuContent>
       </DropdownMenu>
     </>
