@@ -5,7 +5,7 @@
 1. _Email_:- trexturbo55@gmail.com
 1. _password_ :- Trex!!@@##
 
-#### ⭐The changes made here can be seen [here](https://ecomm-store-mocha.vercel.app/)
+#### ⭐The changes made here can be seen [here](https://forge-ecomm-store.vercel.app/)
 
 #### Features:-
 1. Beautiful minimalistic ui by [Shadcn](https://ui.shadcn.com/)
