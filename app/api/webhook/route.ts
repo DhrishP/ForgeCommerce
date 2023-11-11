@@ -76,3 +76,4 @@ export async function POST(req: Request) {
   }
   return NextResponse.json({}, { status: 200 });
 }
+//SOME THINGS ARE COMMENTED FOR FUTURE USE AFTER PURCHASE OF DOMAIN

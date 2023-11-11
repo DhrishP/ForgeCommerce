@@ -14,26 +14,26 @@ export async function GET(
 
     const products = await prisma.products.findUnique({
       where: {
-        id: params.productId
+        id: params.productId,
       },
       include: {
         Image: true,
         categories: true,
         size: true,
         color: true,
-      }
+      },
     });
-  
+
     return NextResponse.json(products);
   } catch (error) {
-    console.log('[PRODUCT_GET]', error);
+    console.log("[PRODUCT_GET]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
-};
+}
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { productId: string, StoreId: string } }
+  { params }: { params: { productId: string; StoreId: string } }
 ) {
   try {
     const { userId } = auth();
@@ -49,8 +49,8 @@ export async function DELETE(
     const storeByUserId = await prisma.store.findFirst({
       where: {
         id: params.StoreId,
-        userId
-      }
+        userId,
+      },
     });
 
     if (!storeByUserId) {
@@ -59,28 +59,36 @@ export async function DELETE(
 
     const products = await prisma.products.delete({
       where: {
-        id: params.productId
+        id: params.productId,
       },
     });
-  
+
     return NextResponse.json(products);
   } catch (error) {
-    console.log('[PRODUCT_DELETE]', error);
+    console.log("[PRODUCT_DELETE]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
-};
-
+}
 
 export async function PUT(
   req: Request,
-  { params }: { params: { productId: string, StoreId: string } }
+  { params }: { params: { productId: string; StoreId: string } }
 ) {
   try {
     const { userId } = auth();
 
     const body = await req.json();
 
-    const { name, price, CategoriesId, Image, colorId, sizesId, Featured, Archived } = body;
+    const {
+      name,
+      price,
+      CategoriesId,
+      Image,
+      colorId,
+      sizesId,
+      Featured,
+      Archived,
+    } = body;
 
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 403 });
@@ -117,8 +125,8 @@ export async function PUT(
     const storeByUserId = await prisma.store.findFirst({
       where: {
         id: params.StoreId,
-        userId
-      }
+        userId,
+      },
     });
 
     if (!storeByUserId) {
@@ -127,7 +135,7 @@ export async function PUT(
 
     await prisma.products.update({
       where: {
-        id: params.productId
+        id: params.productId,
       },
       data: {
         name,
@@ -145,58 +153,79 @@ export async function PUT(
 
     const products = await prisma.products.update({
       where: {
-        id: params.productId
+        id: params.productId,
       },
       data: {
         Image: {
           createMany: {
-            data: [
-              ...Image.map((image: { url: string }) => image),
-            ],
+            data: [...Image.map((image: { url: string }) => image)],
           },
         },
       },
-    })
-  
+    });
+
     return NextResponse.json(products);
   } catch (error) {
-    console.log('[PRODUCT_PATCH]', error);
+    console.log("[PRODUCT_PATCH]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
-};
+}
 
-export async function PATCH(req:Request, { params }: { params: { productId: string, StoreId: string } }){
-     const { userId } = auth();
-     const { featured, archived } = await req.json();
-      if (!userId) {
-        return new NextResponse("Unauthenticated", { status: 403 });
-      }
-      if (!params.productId) {
-        return new NextResponse("Product id is required", { status: 400 });
-      }
-      if(!(featured && !archived || archived && !featured)) return NextResponse.json({message: 'Invalid request'},{status: 400})
-      if (featured && !archived) {
-        const products = await prisma.products.update({
-          where: {
-            id: params.productId
-          },
-          data: {
-            Featured: featured,
-          },
-        });
-        return NextResponse.json(products);
-      }
-      if(archived && !featured){
-        const products = await prisma.products.update({
-          where: {
-            id: params.productId
-          },
-          data: {
-            Archived: archived,
-          },
-        });
-        return NextResponse.json(products);
-      }
+export async function PATCH(
+  req: Request,
+  { params }: { params: { productId: string; StoreId: string } }
+) {
+  const { userId } = auth();
+  const { featured, archived } = await req.json();
+  if (!userId) {
+    return new NextResponse("Unauthenticated", { status: 403 });
+  }
+  if (!params.productId) {
+    return new NextResponse("Product id is required", { status: 400 });
+  }
+  if (featured && !archived) {
+    const products = await prisma.products.update({
+      where: {
+        id: params.productId,
+      },
+      data: {
+        Featured: featured,
+      },
+    });
+    return NextResponse.json(products);
+  }
+  if (archived && !featured) {
+    const products = await prisma.products.update({
+      where: {
+        id: params.productId,
+      },
+      data: {
+        Archived: archived,
+      },
+    });
 
-     
+    return NextResponse.json(products);
+  }
+  if (!featured && !archived) {
+    const products = await prisma.products.update({
+      where: {
+        id: params.productId,
+      },
+      data: {
+        Archived: archived,
+      },
+    });
+    return NextResponse.json(products);
+  }
+  if (featured && archived) {
+    const products = await prisma.products.update({
+      where: {
+        id: params.productId,
+      },
+      data: {
+        Featured: !featured, //true hota hai , we are changing it
+      },
+    });
+    return NextResponse.json(products);
+  }
 }
