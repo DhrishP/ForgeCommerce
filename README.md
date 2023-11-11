@@ -15,6 +15,10 @@
 ![](image-2.png)
 1. Realtime payment with pre and post order tracking using stripe
 ![](image-3.png)
+1. Dark and light mode
+![](image-4.png)
+1. API ROUTES (for ease of access)
+![](image-5.png)
 
 
 #### Techonologies used:-
