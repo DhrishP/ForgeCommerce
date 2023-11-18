@@ -1,13 +1,28 @@
 import prisma from "@/prisma/client";
+import redis from "@/lib/redis";
 
+export default async function getSales(StoreId: string) {
+  if (!StoreId) return null;
+  const cachedVAL = await redis.get(`getSalesLength:${StoreId}`);
 
-export default async function getSales(StoreId:string) {
-    const res = await prisma.order.findMany({
-        where:{
-            isPaid:true,
-            StoreId
-        }
-    })
+  if (cachedVAL) {
+    return cachedVAL;
+  }
 
-    return res.length
+  const res = await prisma.order.findMany({
+    where: {
+      isPaid: true,
+      StoreId,
+    },
+    select: {
+      Email: true,
+      id: true,
+      name: true,
+    },
+  });
+
+  await redis.set(`getSalesLength:${StoreId}`, JSON.stringify(res.length));
+  await redis.expire(`getSalesLength:${StoreId}`, 60 * 60);
+
+  return res.length;
 }
