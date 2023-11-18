@@ -3,7 +3,7 @@ import redis from "@/lib/redis";
 
 export default async function getSales(StoreId: string) {
   if (!StoreId) return null;
-  const cachedVAL = await redis.get(`getSalesLength:${StoreId}`);
+  const cachedVAL:string | null = await redis.get(`getSalesLength:${StoreId}`);
 
   if (cachedVAL) {
     return cachedVAL;

@@ -1,9 +1,10 @@
 "use client";
 import { BarChart, Bar, ResponsiveContainer, XAxis, YAxis } from "recharts";
 type OverviewGraphProps = {
-  data: any[];
+  data: any[] | null ;
 };
 const OverviewGraph = ({ data }: OverviewGraphProps) => {
+  if(!data) return null
   return (
     <ResponsiveContainer width="100%" height={400}>
       <BarChart data={data}>

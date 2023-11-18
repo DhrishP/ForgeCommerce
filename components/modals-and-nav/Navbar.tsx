@@ -13,17 +13,17 @@ const Navbar = async () => {
   if (!userId) {
     redirect("/sign-in");
   }
-  const cachedVAL = await redis.get(`storeNavbar:${userId}`);
-  if (cachedVAL) {
-    stores = JSON.parse(cachedVAL);
-  } else {
+  let cachedVAL:any | null = await redis.get(`storeNavbar:${userId}`);
+  if (!cachedVAL) {
     stores = await prisma.store.findMany({
-      where: {
-        userId: userId,
-      },
-    });
-    await redis.set(`storeNavbar:${userId}`, JSON.stringify(stores));
-    await redis.expire(`storeNavbar:${userId}`, 60 * 60);
+        where: {
+          userId: userId,
+        },
+      });
+      await redis.set(`storeNavbar:${userId}`, JSON.stringify(stores));
+      await redis.expire(`storeNavbar:${userId}`, 60 * 60);
+  } else {
+    stores = cachedVAL;
   }
 
   return (
