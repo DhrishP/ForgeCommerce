@@ -3,8 +3,8 @@ import redis from '@/lib/redis';
 
 export default async function getProducts(StoreId:string){
     if(!StoreId) return null
-    const cachedVAL = await redis.get(`getProducts:${StoreId}`)
-    if(cachedVAL){
+    const cachedVAL:string | null = await redis.get(`getProducts:${StoreId}`)
+    if(cachedVAL ){
       
         return cachedVAL
     }

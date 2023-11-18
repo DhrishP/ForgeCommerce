@@ -3,10 +3,9 @@ import redis from '@/lib/redis';
 
 export default async function getRevenue(StoreId: string) {
   if (!StoreId) return null;
-  const cachedVAL = await redis.get(`getRevenue:${StoreId}`);
+  const cachedVAL:string|null = await redis.get(`getRevenue:${StoreId}`);
   if (cachedVAL) {
-
-    return JSON.parse(cachedVAL);
+    return JSON.parse(cachedVAL );
   }
 
 

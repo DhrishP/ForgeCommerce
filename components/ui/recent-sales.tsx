@@ -7,16 +7,17 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { formatter } from "@/lib/utils";
-type Data = {
+export type Data = {
   id: string;
   name: string;
   email: string;
   pricePaid: number;
 };
 type SalesProps = {
-  data: Data[];
+  data: Data[] | null;
 };
 const Sales = ({ data }: SalesProps) => {
+  if (!data) return null; 
   return (
     <Card>
       <CardHeader>
