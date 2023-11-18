@@ -32,6 +32,7 @@ const OrdersPage = async ({ params }: { params: { StoreId: string } }) => {
     ),
     createdAt:order.createdAt.toLocaleDateString()
   }));
+  
   return (
     <div className="flex flex-col">
       <div className="flex-1 py-6 px-8">
