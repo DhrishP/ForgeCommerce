@@ -1,6 +1,12 @@
 import prisma from "@/prisma/client";
+import redis from "@/lib/redis";
 
 export default async function getUserinfo(StoreId: string) {
+  if (!StoreId) return null;
+  const cachedVAL = await redis.get(`getUserinfo:${StoreId}`);
+  if (cachedVAL) {
+    return JSON.parse(cachedVAL);
+  }
   const userInfo = await prisma.order.findMany({
     where: {
       StoreId,
@@ -13,10 +19,11 @@ export default async function getUserinfo(StoreId: string) {
         },
       },
     },
+
     orderBy: {
       createdAt: "desc",
     },
-      take:4,
+    take: 5,
   });
 
   const userData = userInfo.map((user) => ({
@@ -27,6 +34,8 @@ export default async function getUserinfo(StoreId: string) {
       return inital + item.product.price.toNumber();
     }, 0),
   }));
+  await redis.set(`getUserinfo:${StoreId}`, JSON.stringify(userData));
+  await redis.expire(`getUserinfo:${StoreId}`, 60 * 60);
 
   return userData;
 }

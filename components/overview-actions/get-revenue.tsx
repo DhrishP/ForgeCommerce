@@ -1,6 +1,15 @@
 import prisma from "@/prisma/client";
+import redis from '@/lib/redis';
 
 export default async function getRevenue(StoreId: string) {
+  if (!StoreId) return null;
+  const cachedVAL = await redis.get(`getRevenue:${StoreId}`);
+  if (cachedVAL) {
+
+    return JSON.parse(cachedVAL);
+  }
+
+
   const orders = await prisma.order.findMany({
     where: {
       StoreId,
@@ -26,6 +35,7 @@ export default async function getRevenue(StoreId: string) {
   const total = findProduct.reduce((initial, curritem) => {
     return initial + curritem.price.toNumber();
   }, 0);
-
+  await redis.set(`getRevenue:${StoreId}`, total);
+  await redis.expire(`getRevenue:${StoreId}`, 60 * 60);
   return total;
 }
