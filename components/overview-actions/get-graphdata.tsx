@@ -1,10 +1,16 @@
 import prisma from "@/prisma/client";
+import redis from "@/lib/redis";
 type GraphData = {
   name: string;
   total: number;
 };
 
 export default async function getGraphData(StoreId: string) {
+  if (!StoreId) return null;
+  const cachedVAL = await redis.get(`getGraphData:${StoreId}`);
+  if (cachedVAL) {
+    return JSON.parse(cachedVAL);
+  }
   const paidOrders = await prisma.order.findMany({
     where: {
       StoreId,
@@ -80,5 +86,7 @@ export default async function getGraphData(StoreId: string) {
   for (const month in monthlyRevenue) {
     data[parseInt(month)].total = monthlyRevenue[parseInt(month)];
   }
+  await redis.set(`getGraphData:${StoreId}`, JSON.stringify(data));
+  await redis.expire(`getGraphData:${StoreId}`, 60 * 60);
   return data
 }
