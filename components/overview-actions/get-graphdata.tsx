@@ -6,6 +6,7 @@ type GraphData = {
 };
 
 export default async function getGraphData(StoreId: string) {
+ 
   if (!StoreId) return null;
   const cachedVAL:any[] |null  = await redis.get(`getGraphData:${StoreId}`);
   if (cachedVAL) {
