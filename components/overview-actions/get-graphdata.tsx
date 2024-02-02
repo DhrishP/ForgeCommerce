@@ -6,10 +6,12 @@ type GraphData = {
 };
 
 export default async function getGraphData(StoreId: string) {
+ 
   if (!StoreId) return null;
-  const cachedVAL = await redis.get(`getGraphData:${StoreId}`);
+  const cachedVAL:any[] |null  = await redis.get(`getGraphData:${StoreId}`);
   if (cachedVAL) {
-    return JSON.parse(cachedVAL);
+
+    return cachedVAL;
   }
   const paidOrders = await prisma.order.findMany({
     where: {

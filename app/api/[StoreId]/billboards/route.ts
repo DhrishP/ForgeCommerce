@@ -1,6 +1,7 @@
 import { auth } from "@clerk/nextjs";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/client";
+import ratelimit from "@/lib/rate-limit";
 
 export async function GET(
   req: Request,
@@ -22,7 +23,7 @@ export async function GET(
 }
 
 export async function POST(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { StoreId: string } }
 ) {
   const { userId } = auth();
