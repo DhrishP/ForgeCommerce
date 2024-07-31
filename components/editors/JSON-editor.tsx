@@ -148,7 +148,7 @@ const JsonEditorModal: React.FC<JsonEditorModalProps> = ({
                   onChange={(newValue) =>
                     handleJsonChange(newValue, field.name)
                   }
-                  error={jsonErrors[field.name]}
+                  error={jsonErrors[field.name]?'Invalid JSON':''}
                 />
               ))}
             </div>

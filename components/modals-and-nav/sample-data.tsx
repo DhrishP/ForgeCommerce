@@ -33,11 +33,9 @@ const defaultSizes = JSON.stringify(
 );
 const defaultBills = JSON.stringify(
   {
-    Bill1: "Bill1",
-    Bill2: "Bill2",
-    Bill3: "Bill3",
-    Bill4: "Bill4",
-    Bill5: "Bill5",
+    "Free Arrivals": "https://res.cloudinary.com/duvuaoxpz/image/upload/v1690808793/ll3rlnvbtto96gnhl5cx.png",
+    "New Arrivals": "https://res.cloudinary.com/duvuaoxpz/image/upload/v1690808807/qj1xmvpabx4stnu4ixk0.png",
+    "Winter Collection": "https://res.cloudinary.com/duvuaoxpz/image/upload/v1690750877/mefshoqkahgpwj7zp3gy.png",
   },
   null,
   2
@@ -53,22 +51,22 @@ const SampleDataModal = () => {
         {
           name: "categories",
           defaultValue: defaultCategories,
-          label: "Categories",
+          label: "Categories{category names}",
         },
         {
           name: "colors",
           defaultValue: defaultColors,
-          label: "Colors",
+          label: "Colors{colorname : colorcode}",
         },
         {
           name: "sizes",
           defaultValue: defaultSizes,
-          label: "Sizes",
+          label: "Sizes{sizename : size}",
         },
         {
           name: "bills",
           defaultValue: defaultBills,
-          label: "Bills",
+          label: "Bills{billboard text : billboard url}",
         },
       ]}
       onSubmit={(data) => {

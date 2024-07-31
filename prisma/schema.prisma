@@ -82,7 +82,7 @@ model Products {
   color        Colors      @relation("ProducttoColor", fields: [colorId], references: [id])
   name         String
   price        Decimal
-  description String?
+  descriptionMark String?
   Featured     Boolean     @default(false)
   Archived     Boolean     @default(false)
   Image        Image[]     @relation("ProducttoImage")
