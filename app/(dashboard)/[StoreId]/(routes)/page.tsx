@@ -39,7 +39,7 @@ const Dashboard = async ({ params }: { params: { StoreId: string } }) => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold ">
-                {formatter.format(Totalrevenue)}
+                {Totalrevenue !== null ? formatter.format(Totalrevenue) : ''}
               </div>
             </CardContent>
           </Card>

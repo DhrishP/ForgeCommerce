@@ -5,7 +5,6 @@ import StoreDropdown from "./StoreDropdown";
 import { redirect } from "next/navigation";
 import prisma from "@/prisma/client";
 import { ThemeButton } from "./theme-button";
-import redis from "@/lib/redis";
 
 const Navbar = async () => {
   const { userId } = auth();
@@ -13,18 +12,12 @@ const Navbar = async () => {
   if (!userId) {
     redirect("/sign-in");
   }
-  let cachedVAL:any | null = await redis.get(`storeNavbar:${userId}`);
-  if (!cachedVAL) {
-    stores = await prisma.store.findMany({
-        where: {
-          userId: userId,
-        },
-      });
-      await redis.set(`storeNavbar:${userId}`, JSON.stringify(stores));
-      await redis.expire(`storeNavbar:${userId}`, 60 * 60);
-  } else {
-    stores = cachedVAL;
-  }
+
+  stores = await prisma.store.findMany({
+    where: {
+      userId: userId,
+    },
+  });
 
   return (
     <>

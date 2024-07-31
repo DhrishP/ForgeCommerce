@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
-import redis from "@/lib/redis";
+
 
 export async function POST(req: Request) {
   const { userId } = auth();
@@ -16,8 +16,6 @@ export async function POST(req: Request) {
     },
   });
   if (createStore) {
-    await redis.set(`storeNavbar:${userId}`, JSON.stringify(createStore));
-    await redis.expire(`storeNavbar:${userId}`, 60 * 60);
     return NextResponse.json(createStore);
   } else {
     NextResponse.error();

@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/client";
-import ratelimit from "@/lib/rate-limit";
+
 
 export async function GET(
   req: Request,
