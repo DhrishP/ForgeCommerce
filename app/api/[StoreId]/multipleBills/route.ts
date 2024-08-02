@@ -6,11 +6,13 @@ export async function POST(
   req: Request,
   { params }: { params: { StoreId: string } }
 ) {
-  const { dataArr } = await req.json();
+  const { dataObj } = await req.json();
   const { userId } = auth();
 
-  if (!dataArr) {
-    return new NextResponse("Array is required", { status: 400 });
+  console.log(dataObj);
+
+  if (!dataObj) {
+    return new NextResponse("Data object is required", { status: 400 });
   }
   if (!params.StoreId) {
     return new NextResponse("Store id is required", { status: 400 });
@@ -20,10 +22,10 @@ export async function POST(
   }
 
   const addBills = await prisma.billBoard.createMany({
-    data: dataArr.map((item: { key: string; value: string }) => ({
-        label: item.key,
-        ImageUrl: item.value,
-        StoreId: params.StoreId,
+    data: Object.entries(dataObj).map(([key, value]) => ({
+      label: key,
+      ImageUrl: String(value),
+      StoreId: params.StoreId,
     })),
   });
   console.log(addBills);
