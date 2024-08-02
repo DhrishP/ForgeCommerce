@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import JsonEditorModal from "../editors/JSON-editor";
-import { defaultBills } from "@/utils/quick-data";
+import { defaultSizes } from "@/utils/quick-data";
 import axios from "axios";
 import { useParams } from "next/navigation";
 type OnSubmitProps = {
@@ -11,28 +11,26 @@ type OnSubmitProps = {
   bills?: Record<string, string>;
 };
 
-const SampleDataModalBill = () => {
+const SampleDataModalSizes = () => {
   const param = useParams();
   const onSubmit = async (data: OnSubmitProps) => {
     console.log(data);
-    const putBills = await axios.post(`/api/${param.StoreId}/multipleBills`, {
-      dataObj: data.bills,
+    const putSizes = await axios.post(`/api/${param.StoreId}/multipleSizes`, {
+      dataObj: data.sizes,
     });
-    if (putBills.status === 200) {
-      console.log("Bills added successfully");
-    } else {
-      return;
+    if (putSizes.status === 200) {
+      console.log("Sizes added successfully");
     }
   };
   return (
     <JsonEditorModal
       title="Edit Store and Add Sample Data"
-      description="Make changes to your profile and add sample data for billboards in JSON format."
+      description="Make changes to your profile and add sample data for sizes in JSON format."
       fields={[
         {
-          name: "bills",
-          defaultValue: defaultBills,
-          label: "Bills{billboard text : billboard url}",
+          name: "sizes",
+          defaultValue: defaultSizes,
+          label: "Sizes{sizename : size}",
         },
       ]}
       onSubmit={onSubmit}
@@ -41,4 +39,4 @@ const SampleDataModalBill = () => {
   );
 };
 
-export default SampleDataModalBill;
+export default SampleDataModalSizes;

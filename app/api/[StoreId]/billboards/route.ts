@@ -2,23 +2,22 @@ import { auth } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/client";
 
-
 export async function GET(
   req: Request,
   { params }: { params: { StoreId: string } }
 ) {
   try {
-   
-    if(!params.StoreId) return  NextResponse.json("Store Id is required",{status:404})
+    if (!params.StoreId)
+      return NextResponse.json("Store Id is required", { status: 404 });
     const FindBillboards = await prisma.billBoard.findMany({
-        where:{
-            StoreId:params.StoreId
-        }
-    })
-    return NextResponse.json(FindBillboards)
+      where: {
+        StoreId: params.StoreId,
+      },
+    });
+    return NextResponse.json(FindBillboards);
   } catch (err) {
     console.log(err);
-    return NextResponse.error()
+    return NextResponse.error();
   }
 }
 
