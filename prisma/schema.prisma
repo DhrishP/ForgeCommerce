@@ -115,7 +115,6 @@ model Order {
   updatedAt  DateTime    @updatedAt
 }
 
-// Intermediary for a many-to-many relationship
 model OrderItem {
   id        String   @id @default(cuid())
   orderId   String // Foreign Key to Order
