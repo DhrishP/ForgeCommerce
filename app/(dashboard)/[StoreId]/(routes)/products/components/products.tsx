@@ -9,6 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { DataTable } from "../../../../../../components/ui/data-table";
 import { FilteredDataProps, columns } from "./column";
 import ApiList from "../../../../../../components/ui/api-list";
+import axios from "axios";
 
 type ProductsProps = {
   ProductsData: FilteredDataProps[];
@@ -17,6 +18,25 @@ type ProductsProps = {
 const Products = ({ ProductsData }: ProductsProps) => {
   const router = useRouter();
   const params = useParams();
+  const [Products, setProducts] =
+    React.useState<FilteredDataProps[]>(ProductsData);
+  const onDeleteSelected = async (ids: string[]) => {
+    try {
+      console.log(ids, "ids deleted");
+      const res = await axios.delete(
+        `/api/${params.StoreId}/products/multidelete`,
+        {
+          data: { idsArr: ids },
+        }
+      );
+      console.log(res, "res");
+      setProducts((prev) => prev.filter((item) => !ids.includes(item.id)));
+      return "true";
+    } catch (err) {
+      console.log(err);
+      return "Something went order";
+    }
+  };
 
   return (
     <>
@@ -38,7 +58,12 @@ const Products = ({ ProductsData }: ProductsProps) => {
         </Button>
       </div>
       <Separator />
-      <DataTable searchKey="name" columns={columns} data={ProductsData} />
+      <DataTable
+        onDeleteSelected={onDeleteSelected}
+        searchKey="name"
+        columns={columns}
+        data={Products}
+      />
       <div className="w-full mt-10 ml-2">
         <Heading
           title={"Api"}
