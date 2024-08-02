@@ -18,7 +18,7 @@ import { Separator } from "@/components/ui/separator";
 import { formatter } from "@/lib/utils";
 import { CreditCard, DollarSign, Shirt } from "lucide-react";
 import React from "react";
-import { dataExists } from "@/components/quick-adds/data-exists";
+import { dataExists } from "@/components/sample-actions/data-exists";
 
 const Dashboard = async ({ params }: { params: { StoreId: string } }) => {
   const sales = await getSales(params.StoreId);
