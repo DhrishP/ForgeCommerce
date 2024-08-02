@@ -37,7 +37,6 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState({});
   const [isDeleting, setIsDeleting] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
   const { toast } = useToast();
 
   const allColumns: ColumnDef<TData, TValue>[] = [
@@ -92,9 +91,7 @@ export function DataTable<TData, TValue>({
     setIsDeleting(true);
     try {
       const response = await onDeleteSelected(selectedIds);
-      console.log(response, "response data");
       if (response.length > 4) {
-        setToastMessage(response as string);
         toast({
           title: "Something went wrong",
           description: response as string,
@@ -103,10 +100,12 @@ export function DataTable<TData, TValue>({
         setRowSelection({});
         return;
       }
-      setToastMessage(`Successfully deleted ${selectedIds.length} row(s)`);
+      toast({
+        title: "Success",
+        description: "Rows deleted successfully",
+      });
       setRowSelection({});
     } catch (error) {
-      setToastMessage("An error occurred while deleting rows");
       toast({
         title: "Error",
         description: "An error occurred while deleting rows",
