@@ -83,6 +83,7 @@ model Products {
   name         String
   price        Decimal
   descriptionMark String?
+  ytURL        String?
   Featured     Boolean     @default(false)
   Archived     Boolean     @default(false)
   Image        Image[]     @relation("ProducttoImage")

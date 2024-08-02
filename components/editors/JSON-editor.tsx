@@ -51,7 +51,7 @@ const JsonEditor: React.FC<JsonEditorProps> = ({
         id={label}
         value={value}
         onChange={handleChange}
-        className="font-mono text-sm h-[300px] resize-none"
+        className="font-mono text-sm h-[60vh] resize-none"
         placeholder={`Enter JSON for ${label}`}
       />
       {error && (
@@ -133,7 +133,7 @@ const JsonEditorModal: React.FC<JsonEditorModalProps> = ({
         <DialogTrigger asChild>
           <Button variant="outline">{triggerButtonText}</Button>
         </DialogTrigger>
-        <DialogContent className="max-w-[80vw] max-h-[60vh] h-full w-full overflow-y-scroll">
+        <DialogContent className="max-w-[90vw] max-h-[80vh] h-full w-full overflow-y-scroll">
           <div className="">
             <DialogHeader>
               <DialogTitle>{title}</DialogTitle>
