@@ -82,6 +82,8 @@ model Products {
   color        Colors      @relation("ProducttoColor", fields: [colorId], references: [id])
   name         String
   price        Decimal
+  descriptionMark String?
+  ytURL        String?
   Featured     Boolean     @default(false)
   Archived     Boolean     @default(false)
   Image        Image[]     @relation("ProducttoImage")
@@ -113,7 +115,6 @@ model Order {
   updatedAt  DateTime    @updatedAt
 }
 
-// Intermediary for a many-to-many relationship
 model OrderItem {
   id        String   @id @default(cuid())
   orderId   String // Foreign Key to Order

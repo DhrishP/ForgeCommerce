@@ -6,9 +6,8 @@ type GraphData = {
 };
 
 export default async function getGraphData(StoreId: string) {
- 
   if (!StoreId) return null;
- 
+
   const paidOrders = await prisma.order.findMany({
     where: {
       StoreId,
@@ -84,5 +83,5 @@ export default async function getGraphData(StoreId: string) {
   for (const month in monthlyRevenue) {
     data[parseInt(month)].total = monthlyRevenue[parseInt(month)];
   }
-  return data
+  return data;
 }
