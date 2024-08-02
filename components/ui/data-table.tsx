@@ -20,12 +20,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   searchKey: string;
   onDeleteSelected: (ids: string[]) => Promise<String>;
+  isOrder?: boolean;
 }
 
 export function DataTable<TData, TValue>({
@@ -33,11 +35,13 @@ export function DataTable<TData, TValue>({
   data,
   searchKey,
   onDeleteSelected,
+  isOrder = false,
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState({});
   const [isDeleting, setIsDeleting] = useState(false);
   const { toast } = useToast();
+  const router = useRouter()
 
   const allColumns: ColumnDef<TData, TValue>[] = [
     {
@@ -105,6 +109,7 @@ export function DataTable<TData, TValue>({
         description: "Rows deleted successfully",
       });
       setRowSelection({});
+      router.refresh()
     } catch (error) {
       toast({
         title: "Error",
@@ -127,13 +132,14 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-xs"
         />
-
-        <Button
-          onClick={handleDeleteSelected}
-          disabled={isDeleting || Object.keys(rowSelection).length === 0}
-        >
-          {isDeleting ? "Deleting..." : "Delete Selected"}
-        </Button>
+        {!isOrder && ( // temporary fix for order deleting issue
+          <Button
+            onClick={handleDeleteSelected}
+            disabled={isDeleting || Object.keys(rowSelection).length === 0}
+          >
+            {isDeleting ? "Deleting..." : "Delete Selected"}
+          </Button>
+        )}
       </div>
       <div className="rounded-lg border">
         <Table>
