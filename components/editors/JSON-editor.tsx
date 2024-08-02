@@ -69,13 +69,19 @@ interface Field {
   label: string;
   defaultValue?: string;
 }
+type OnSubmitProps = {
+  categories?: string[];
+  colors?: Record<string, string>;
+  sizes?: Record<string, string>;
+  bills?: Record<string, string>;
+};
 
 interface JsonEditorModalProps {
   title: string;
   description: string;
   triggerButtonText: string;
   fields: Field[];
-  onSubmit: (data: Record<string, any>) => void;
+  onSubmit: (data: OnSubmitProps) => void;
 }
 
 const JsonEditorModal: React.FC<JsonEditorModalProps> = ({
@@ -148,7 +154,7 @@ const JsonEditorModal: React.FC<JsonEditorModalProps> = ({
                   onChange={(newValue) =>
                     handleJsonChange(newValue, field.name)
                   }
-                  error={jsonErrors[field.name]?'Invalid JSON':''}
+                  error={jsonErrors[field.name] ? "Invalid JSON" : ""}
                 />
               ))}
             </div>

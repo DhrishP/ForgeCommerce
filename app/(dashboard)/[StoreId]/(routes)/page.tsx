@@ -1,4 +1,4 @@
-import SampleDataModal from "@/components/modals-and-nav/sample-data";
+import SampleDataModal from "@/components/quick-adds/sample-data"
 import getGraphdata from "@/components/overview-actions/get-graphdata";
 import getProducts from "@/components/overview-actions/get-products";
 import getRevenue from "@/components/overview-actions/get-revenue";
