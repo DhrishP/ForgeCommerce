@@ -30,7 +30,7 @@ export async function POST(
     data: nameArr.map((name: string, index: number) => ({
       name,
       StoreId: params.StoreId,
-      BillboardId: billIdsMap[index % billIdsMap.length], // Assign a billboard ID in a round-robin fashion
+      billboardId: billIdsMap[index % billIdsMap.length], // Assign a billboard ID in a round-robin fashion
     })),
   });
   console.log(addCategories);

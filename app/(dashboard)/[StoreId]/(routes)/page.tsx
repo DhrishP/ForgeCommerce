@@ -1,4 +1,4 @@
-import SampleDataModal from "@/components/quick-adds/sample-data"
+import SampleDataModal from "@/components/quick-adds/sample-data";
 import getGraphdata from "@/components/overview-actions/get-graphdata";
 import getProducts from "@/components/overview-actions/get-products";
 import getRevenue from "@/components/overview-actions/get-revenue";
@@ -18,7 +18,7 @@ import { Separator } from "@/components/ui/separator";
 import { formatter } from "@/lib/utils";
 import { CreditCard, DollarSign, Shirt } from "lucide-react";
 import React from "react";
-
+import { dataExists } from "@/components/quick-adds/data-exists";
 
 const Dashboard = async ({ params }: { params: { StoreId: string } }) => {
   const sales = await getSales(params.StoreId);
@@ -26,11 +26,13 @@ const Dashboard = async ({ params }: { params: { StoreId: string } }) => {
   const Totalrevenue = await getRevenue(params.StoreId);
   const GraphData = await getGraphdata(params.StoreId);
   const SalesData = await getUserinfo(params.StoreId);
+  const dataExist = await dataExists(params.StoreId);
   return (
     <div className="px-4 py-2 md:px-6 lg:px-8 w-full h-full">
       <div className="flex flex-row justify-between items-center">
         <Heading title="Dashboard" description="Overview of your store" />
-        <SampleDataModal/>
+
+        {dataExist ? <></> : <SampleDataModal />}
       </div>
       <Separator />
       <div className="grid sm:grid-cols-3 w-full gap-6 mt-2 ">
@@ -40,7 +42,7 @@ const Dashboard = async ({ params }: { params: { StoreId: string } }) => {
               <CardTitle className="text-md">Total Revenue</CardTitle>
               <CardDescription className="text-muted-foreground">
                 <DollarSign className="w-5 h-5" />
-              </CardDescription> 
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold ">

@@ -21,7 +21,7 @@ const SampleDataModal = () => {
   const onSubmit = async (data: OnSubmitProps) => {
     console.log(data);
     const putBills = await axios.post(`/api/${param.StoreId}/multipleBills`, {
-      dataArr: data.bills,
+      dataObj: data.bills,
     });
     if (putBills.status === 200) {
       console.log("Bills added successfully");
@@ -38,7 +38,7 @@ const SampleDataModal = () => {
       return;
     }
     const putColors = await axios.post(`/api/${param.StoreId}/multipleColors`, {
-      dataArr: data.colors,
+      dataObj: data.colors,
     });
     if (putColors.status === 200) {
       console.log("Colors added successfully");
@@ -46,7 +46,7 @@ const SampleDataModal = () => {
       return;
     }
     const putSizes = await axios.post(`/api/${param.StoreId}/multipleSizes`, {
-      dataArr: data.sizes,
+      dataObj: data.sizes,
     });
     if (putSizes.status === 200) {
       console.log("Sizes added successfully");
