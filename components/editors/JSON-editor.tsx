@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "../ui/use-toast";
 
 interface JsonEditorProps {
   label: string;
@@ -81,7 +82,7 @@ interface JsonEditorModalProps {
   description: string;
   triggerButtonText: string;
   fields: Field[];
-  onSubmit: (data: OnSubmitProps) => void;
+  onSubmit: (data: OnSubmitProps) => Promise<void>;
 }
 
 const JsonEditorModal: React.FC<JsonEditorModalProps> = ({
@@ -97,6 +98,9 @@ const JsonEditorModal: React.FC<JsonEditorModalProps> = ({
       return acc;
     }, {} as Record<string, string>)
   );
+  const [isLoading, setIsLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const { toast } = useToast();
 
   const [jsonErrors, setJsonErrors] = useState<Record<string, string>>(() =>
     fields.reduce((acc, field) => {
@@ -122,22 +126,42 @@ const JsonEditorModal: React.FC<JsonEditorModalProps> = ({
     validateJson(newValue, fieldName);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    setIsLoading(true);
     if (Object.values(jsonErrors).every((error) => error === "")) {
       const parsedData = Object.fromEntries(
         Object.entries(jsonData).map(([key, value]) => [key, JSON.parse(value)])
       );
-      onSubmit(parsedData);
+      await onSubmit(parsedData);
+      setIsLoading(false);
+      setIsOpen(false);
+      toast({
+        title: "Quick Data was Added !! Bzzzing out.....🚀",
+      });
+      window.location.reload();
     } else {
       console.log("Cannot submit. Please fix JSON errors.");
+      setIsLoading(false);
+      setIsOpen(false);
     }
   };
 
   return (
     <div className="">
-      <Dialog>
+      <Dialog
+        open={isOpen}
+        onOpenChange={() => {
+          if (!isOpen) {
+            setIsOpen(true);
+          } else {
+            setIsOpen(false);
+          }
+        }}
+      >
         <DialogTrigger asChild>
-          <Button variant="outline">{triggerButtonText}</Button>
+          <Button variant="outline" onClick={() => setIsOpen(true)}>
+            {triggerButtonText}
+          </Button>
         </DialogTrigger>
         <DialogContent className="max-w-[90vw] max-h-[80vh] h-full w-full overflow-y-scroll">
           <div className="">
@@ -145,7 +169,9 @@ const JsonEditorModal: React.FC<JsonEditorModalProps> = ({
               <DialogTitle>{title}</DialogTitle>
               <DialogDescription>{description}</DialogDescription>
             </DialogHeader>
-            <div className="flex space-x-7 mt-10">
+            <div
+              className={`grid gap-6 mt-10 ${getGridColumns(fields.length)}`}
+            >
               {fields.map((field) => (
                 <JsonEditor
                   key={field.name}
@@ -162,12 +188,13 @@ const JsonEditorModal: React.FC<JsonEditorModalProps> = ({
               <Button
                 type="submit"
                 onClick={handleSubmit}
-                disabled={Object.values(jsonErrors).some(
-                  (error) => error !== ""
-                )}
+                disabled={
+                  Object.values(jsonErrors).some((error) => error !== "") ||
+                  isLoading
+                }
                 className="relative"
               >
-                Save changes
+                {isLoading ? "Saving Changes..." : "Save Changes"}
               </Button>
             </DialogFooter>
           </div>
@@ -175,6 +202,19 @@ const JsonEditorModal: React.FC<JsonEditorModalProps> = ({
       </Dialog>
     </div>
   );
+};
+
+const getGridColumns = (fieldCount: number) => {
+  switch (fieldCount) {
+    case 1:
+      return "grid-cols-1";
+    case 2:
+      return "grid-cols-1 md:grid-cols-2";
+    case 3:
+      return "grid-cols-1 md:grid-cols-3";
+    default:
+      return "grid-cols-1 md:grid-cols-2 lg:grid-cols-4";
+  }
 };
 
 export default JsonEditorModal;
