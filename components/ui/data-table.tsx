@@ -19,13 +19,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useToast } from "./use-toast";
+import { useToast } from "@/components/ui/use-toast";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   searchKey: string;
-  onDeleteSelected: (ids: string[]) => Promise<void>;
+  onDeleteSelected: (ids: string[]) => Promise<String>;
 }
 
 export function DataTable<TData, TValue>({
@@ -91,16 +91,29 @@ export function DataTable<TData, TValue>({
 
     setIsDeleting(true);
     try {
-      await onDeleteSelected(selectedIds);
+      const response = await onDeleteSelected(selectedIds);
+      console.log(response, "response data");
+      if (response.length > 4) {
+        setToastMessage(response as string);
+        toast({
+          title: "Something went wrong",
+          description: response as string,
+          variant: "destructive",
+        });
+        setRowSelection({});
+        return;
+      }
       setToastMessage(`Successfully deleted ${selectedIds.length} row(s)`);
       setRowSelection({});
     } catch (error) {
-      setToastMessage("Failed to delete selected rows");
+      setToastMessage("An error occurred while deleting rows");
+      toast({
+        title: "Error",
+        description: "An error occurred while deleting rows",
+        variant: "destructive",
+      });
     } finally {
       setIsDeleting(false);
-      toast({
-        title: toastMessage,
-      });
     }
   };
 
