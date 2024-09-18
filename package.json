@@ -7,11 +7,16 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "dbpush": "npx drizzle-kit generate && npx drizzle-kit migrate && npx drizzle-kit push",
+    "justpush": "npx drizzle-kit push",
+    "justgenerate": "npx drizzle-kit generate",
+    "justmigrate": "npx drizzle-kit migrate"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.21.15",
     "@hookform/resolvers": "^3.1.1",
+    "@neondatabase/serverless": "^0.9.5",
     "@prisma/client": "^5.0.0",
     "@radix-ui/react-avatar": "^1.0.3",
     "@radix-ui/react-checkbox": "^1.0.4",
@@ -36,6 +41,8 @@
     "class-variance-authority": "^0.6.1",
     "clsx": "^1.2.1",
     "cmdk": "^0.2.0",
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.33.0",
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.9",
     "ioredis": "^5.3.2",
@@ -60,6 +67,7 @@
     "zustand": "^4.3.9"
   },
   "devDependencies": {
+    "drizzle-kit": "^0.24.2",
     "prisma": "^5.0.0"
   }
 }
