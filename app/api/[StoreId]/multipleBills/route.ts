@@ -1,34 +1,48 @@
-import prisma from "@/prisma/client";
+import { db } from "@/db/drizzle";
+import { billboards, stores } from "@/db/schema";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
+import { eq, and } from "drizzle-orm";
 
 export async function POST(
   req: Request,
   { params }: { params: { StoreId: string } }
 ) {
-  const { dataObj } = await req.json();
-  const { userId } = auth();
+  try {
+    const { dataObj } = await req.json();
+    const { userId } = auth();
 
-  console.log(dataObj);
+    if (!dataObj) {
+      return new NextResponse("Data object is required", { status: 400 });
+    }
+    if (!params.StoreId) {
+      return new NextResponse("Store id is required", { status: 400 });
+    }
+    if (!userId) {
+      return new NextResponse("Unauthenticated", { status: 403 });
+    }
 
-  if (!dataObj) {
-    return new NextResponse("Data object is required", { status: 400 });
+    const storeByUserId = await db
+      .select()
+      .from(stores)
+      .where(and(eq(stores.id, params.StoreId), eq(stores.userId, userId)))
+      .limit(1);
+
+    if (storeByUserId.length === 0) {
+      return new NextResponse("Unauthorized", { status: 405 });
+    }
+
+    const addBills = await db.insert(billboards).values(
+      Object.entries(dataObj).map(([key, value]) => ({
+        label: key,
+        imageUrl: String(value),
+        StoreId: params.StoreId,
+      }))
+    );
+
+    return NextResponse.json(addBills);
+  } catch (error) {
+    console.log("[MULTIPLE_BILLS_POST]", error);
+    return new NextResponse("Internal error", { status: 500 });
   }
-  if (!params.StoreId) {
-    return new NextResponse("Store id is required", { status: 400 });
-  }
-  if (!userId) {
-    return new NextResponse("Unauthenticated", { status: 403 });
-  }
-
-  const addBills = await prisma.billBoard.createMany({
-    data: Object.entries(dataObj).map(([key, value]) => ({
-      label: key,
-      ImageUrl: String(value),
-      StoreId: params.StoreId,
-    })),
-  });
-  console.log(addBills);
-
-  return NextResponse.json(addBills);
 }
