@@ -1,17 +1,17 @@
 import {
   pgTable,
-  serial,
   text,
-  varchar,
   boolean,
   timestamp,
   decimal,
-  uuid,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
+import { createId } from "@paralleldrive/cuid2";
 
 export const stores = pgTable("stores", {
-  id: uuid("id").defaultRandom().primaryKey(),
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => createId()),
   name: text("name").notNull(),
   userId: text("userId").notNull(),
   createdAt: timestamp("createdAt").defaultNow(),
@@ -21,10 +21,12 @@ export const stores = pgTable("stores", {
 });
 
 export const billboards = pgTable("billboards", {
-  id: uuid("id").defaultRandom().primaryKey(),
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => createId()),
   label: text("label").notNull(),
   imageUrl: text("imageUrl").notNull(),
-  storeId: uuid("storeId").references(() => stores.id),
+  storeId: text("storeId").references(() => stores.id),
   createdAt: timestamp("createdAt").defaultNow(),
   updatedAt: timestamp("updatedAt")
     .defaultNow()
@@ -32,9 +34,11 @@ export const billboards = pgTable("billboards", {
 });
 
 export const categories = pgTable("categories", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  storeId: uuid("storeId").references(() => stores.id),
-  billboardId: uuid("billboardId").references(() => billboards.id),
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => createId()),
+  storeId: text("storeId").references(() => stores.id),
+  billboardId: text("billboardId").references(() => billboards.id),
   name: text("name").notNull(),
   createdAt: timestamp("createdAt").defaultNow(),
   updatedAt: timestamp("updatedAt")
@@ -43,8 +47,10 @@ export const categories = pgTable("categories", {
 });
 
 export const sizes = pgTable("sizes", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  storeId: uuid("storeId").references(() => stores.id),
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => createId()),
+  storeId: text("storeId").references(() => stores.id),
   name: text("name").notNull(),
   value: text("value").notNull(),
   createdAt: timestamp("createdAt").defaultNow(),
@@ -54,8 +60,10 @@ export const sizes = pgTable("sizes", {
 });
 
 export const colors = pgTable("colors", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  storeId: uuid("storeId").references(() => stores.id),
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => createId()),
+  storeId: text("storeId").references(() => stores.id),
   name: text("name").notNull(),
   value: text("value").notNull(),
   createdAt: timestamp("createdAt").defaultNow(),
@@ -65,11 +73,13 @@ export const colors = pgTable("colors", {
 });
 
 export const products = pgTable("products", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  storeId: uuid("storeId").references(() => stores.id),
-  categoriesId: uuid("categoriesId").references(() => categories.id),
-  sizesId: uuid("sizesId").references(() => sizes.id),
-  colorId: uuid("colorId").references(() => colors.id),
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => createId()),
+  storeId: text("storeId").references(() => stores.id),
+  categoriesId: text("categoriesId").references(() => categories.id),
+  sizesId: text("sizesId").references(() => sizes.id),
+  colorId: text("colorId").references(() => colors.id),
   name: text("name").notNull(),
   price: decimal("price").notNull(),
   descriptionMark: text("descriptionMark"),
@@ -83,8 +93,10 @@ export const products = pgTable("products", {
 });
 
 export const images = pgTable("images", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  productId: uuid("productId").references(() => products.id),
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => createId()),
+  productId: text("productId").references(() => products.id),
   url: text("url").notNull(),
   createdAt: timestamp("createdAt").defaultNow(),
   updatedAt: timestamp("updatedAt")
@@ -93,8 +105,10 @@ export const images = pgTable("images", {
 });
 
 export const orders = pgTable("orders", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  storeId: uuid("storeId").references(() => stores.id),
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => createId()),
+  storeId: text("storeId").references(() => stores.id),
   name: text("name").default("Lorem ipsum"),
   email: text("email").default("loremipsum@random.com"),
   isPaid: boolean("isPaid").default(false),
@@ -106,10 +120,13 @@ export const orders = pgTable("orders", {
     .$onUpdateFn(() => new Date()),
 });
 
-export const orderItems = pgTable("orderItems", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  orderId: uuid("orderId").references(() => orders.id),
-  productId: uuid("productId").references(() => products.id),
+
+export const orderitems = pgTable("orderitems", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => createId()),
+  orderId: text("orderId").references(() => orders.id),
+  productId: text("productId").references(() => products.id),
 });
 
 // Relations
@@ -155,7 +172,7 @@ export const productRelations = relations(products, ({ one, many }) => ({
   size: one(sizes, { fields: [products.sizesId], references: [sizes.id] }),
   color: one(colors, { fields: [products.colorId], references: [colors.id] }),
   images: many(images),
-  orderItems: many(orderItems),
+  orderItems: many(orderitems),
 }));
 
 export const imageRelations = relations(images, ({ one }) => ({
@@ -167,13 +184,13 @@ export const imageRelations = relations(images, ({ one }) => ({
 
 export const orderRelations = relations(orders, ({ one, many }) => ({
   store: one(stores, { fields: [orders.storeId], references: [stores.id] }),
-  orderItems: many(orderItems),
+  orderItems: many(orderitems),
 }));
 
-export const orderItemRelations = relations(orderItems, ({ one }) => ({
-  order: one(orders, { fields: [orderItems.orderId], references: [orders.id] }),
+export const orderItemRelations = relations(orderitems, ({ one }) => ({
+  order: one(orders, { fields: [orderitems.orderId], references: [orders.id] }),
   product: one(products, {
-    fields: [orderItems.productId],
+    fields: [orderitems.productId],
     references: [products.id],
   }),
 }));
@@ -186,7 +203,7 @@ export type InsertColor = typeof colors.$inferInsert;
 export type InsertProduct = typeof products.$inferInsert;
 export type InsertImage = typeof images.$inferInsert;
 export type InsertOrder = typeof orders.$inferInsert;
-export type InsertOrderItem = typeof orderItems.$inferInsert;
+export type InsertOrderItem = typeof orderitems.$inferInsert;
 
 export type SelectStore = typeof stores.$inferSelect;
 export type SelectBillboard = typeof billboards.$inferSelect;
@@ -196,4 +213,4 @@ export type SelectColor = typeof colors.$inferSelect;
 export type SelectProduct = typeof products.$inferSelect;
 export type SelectImage = typeof images.$inferSelect;
 export type SelectOrder = typeof orders.$inferSelect;
-export type SelectOrderItem = typeof orderItems.$inferSelect;
+export type SelectOrderItem = typeof orderitems.$inferSelect;
