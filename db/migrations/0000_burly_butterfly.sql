@@ -1,24 +1,24 @@
 CREATE TABLE IF NOT EXISTS "billboards" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"id" text PRIMARY KEY NOT NULL,
 	"label" text NOT NULL,
 	"imageUrl" text NOT NULL,
-	"storeId" uuid,
+	"storeId" text,
 	"createdAt" timestamp DEFAULT now(),
 	"updatedAt" timestamp DEFAULT now()
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "categories" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"storeId" uuid,
-	"billboardId" uuid,
+	"id" text PRIMARY KEY NOT NULL,
+	"storeId" text,
+	"billboardId" text,
 	"name" text NOT NULL,
 	"createdAt" timestamp DEFAULT now(),
 	"updatedAt" timestamp DEFAULT now()
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "colors" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"storeId" uuid,
+	"id" text PRIMARY KEY NOT NULL,
+	"storeId" text,
 	"name" text NOT NULL,
 	"value" text NOT NULL,
 	"createdAt" timestamp DEFAULT now(),
@@ -26,22 +26,22 @@ CREATE TABLE IF NOT EXISTS "colors" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "images" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"productId" uuid,
+	"id" text PRIMARY KEY NOT NULL,
+	"productId" text,
 	"url" text NOT NULL,
 	"createdAt" timestamp DEFAULT now(),
 	"updatedAt" timestamp DEFAULT now()
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "orderItems" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"orderId" uuid,
-	"productId" uuid
+CREATE TABLE IF NOT EXISTS "orderitems" (
+	"id" text PRIMARY KEY NOT NULL,
+	"orderId" text,
+	"productId" text
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "orders" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"storeId" uuid,
+	"id" text PRIMARY KEY NOT NULL,
+	"storeId" text,
 	"name" text DEFAULT 'Lorem ipsum',
 	"email" text DEFAULT 'loremipsum@random.com',
 	"isPaid" boolean DEFAULT false,
@@ -52,11 +52,11 @@ CREATE TABLE IF NOT EXISTS "orders" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "products" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"storeId" uuid,
-	"categoriesId" uuid,
-	"sizesId" uuid,
-	"colorId" uuid,
+	"id" text PRIMARY KEY NOT NULL,
+	"storeId" text,
+	"categoriesId" text,
+	"sizesId" text,
+	"colorId" text,
 	"name" text NOT NULL,
 	"price" numeric NOT NULL,
 	"descriptionMark" text,
@@ -68,8 +68,8 @@ CREATE TABLE IF NOT EXISTS "products" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "sizes" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"storeId" uuid,
+	"id" text PRIMARY KEY NOT NULL,
+	"storeId" text,
 	"name" text NOT NULL,
 	"value" text NOT NULL,
 	"createdAt" timestamp DEFAULT now(),
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS "sizes" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "stores" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"id" text PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
 	"userId" text NOT NULL,
 	"createdAt" timestamp DEFAULT now(),
@@ -115,13 +115,13 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "orderItems" ADD CONSTRAINT "orderItems_orderId_orders_id_fk" FOREIGN KEY ("orderId") REFERENCES "public"."orders"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "orderitems" ADD CONSTRAINT "orderitems_orderId_orders_id_fk" FOREIGN KEY ("orderId") REFERENCES "public"."orders"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "orderItems" ADD CONSTRAINT "orderItems_productId_products_id_fk" FOREIGN KEY ("productId") REFERENCES "public"."products"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "orderitems" ADD CONSTRAINT "orderitems_productId_products_id_fk" FOREIGN KEY ("productId") REFERENCES "public"."products"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

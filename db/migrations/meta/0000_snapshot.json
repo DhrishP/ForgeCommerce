@@ -1,5 +1,5 @@
 {
-  "id": "b6bad4d7-b7e7-4cf0-a199-fdb0b0b2543b",
+  "id": "73417e48-fa14-40b5-90ed-564ae84625e1",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -10,10 +10,9 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
+          "notNull": true
         },
         "label": {
           "name": "label",
@@ -29,7 +28,7 @@
         },
         "storeId": {
           "name": "storeId",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         },
@@ -73,20 +72,19 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
+          "notNull": true
         },
         "storeId": {
           "name": "storeId",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         },
         "billboardId": {
           "name": "billboardId",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         },
@@ -149,14 +147,13 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
+          "notNull": true
         },
         "storeId": {
           "name": "storeId",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         },
@@ -212,14 +209,13 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
+          "notNull": true
         },
         "productId": {
           "name": "productId",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         },
@@ -263,35 +259,34 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.orderItems": {
-      "name": "orderItems",
+    "public.orderitems": {
+      "name": "orderitems",
       "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
+          "notNull": true
         },
         "orderId": {
           "name": "orderId",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         },
         "productId": {
           "name": "productId",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "orderItems_orderId_orders_id_fk": {
-          "name": "orderItems_orderId_orders_id_fk",
-          "tableFrom": "orderItems",
+        "orderitems_orderId_orders_id_fk": {
+          "name": "orderitems_orderId_orders_id_fk",
+          "tableFrom": "orderitems",
           "tableTo": "orders",
           "columnsFrom": [
             "orderId"
@@ -302,9 +297,9 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "orderItems_productId_products_id_fk": {
-          "name": "orderItems_productId_products_id_fk",
-          "tableFrom": "orderItems",
+        "orderitems_productId_products_id_fk": {
+          "name": "orderitems_productId_products_id_fk",
+          "tableFrom": "orderitems",
           "tableTo": "products",
           "columnsFrom": [
             "productId"
@@ -325,14 +320,13 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
+          "notNull": true
         },
         "storeId": {
           "name": "storeId",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         },
@@ -411,32 +405,31 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
+          "notNull": true
         },
         "storeId": {
           "name": "storeId",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         },
         "categoriesId": {
           "name": "categoriesId",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         },
         "sizesId": {
           "name": "sizesId",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         },
         "colorId": {
           "name": "colorId",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         },
@@ -557,14 +550,13 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
+          "notNull": true
         },
         "storeId": {
           "name": "storeId",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         },
@@ -620,10 +612,9 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
+          "notNull": true
         },
         "name": {
           "name": "name",
