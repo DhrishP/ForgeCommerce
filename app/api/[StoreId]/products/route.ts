@@ -109,6 +109,7 @@ export async function GET(
         sizesId,
         Featured: Featured ? true : undefined,
         Archived: false,
+        
       },
       include: {
         Image: true,
