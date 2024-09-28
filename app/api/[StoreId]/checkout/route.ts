@@ -1,7 +1,10 @@
 import Stripe from "stripe";
 import { stripe } from "@/lib/stripe";
 import { NextResponse } from "next/server";
-import prisma from "@/prisma/client";
+
+import { db } from "@/db/drizzle";
+import { orders, orderItems, products } from "@/db/schema";
+import { inArray } from "drizzle-orm";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -22,15 +25,12 @@ export async function POST(
     return NextResponse.json("Product id's needed", { status: 400 });
   }
 
-  const Findproduct = await prisma.products.findMany({
-    where: {
-      id: {
-        in: productIds,
-      },
-    },
-  });
+  const Findproduct = await db
+    .select()
+    .from(products)
+    .where(inArray(products.id, productIds));
 
-  const items:Stripe.Checkout.SessionCreateParams.LineItem[] = [];
+  const items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
 
   Findproduct.forEach((product) => {
     items.push({
@@ -40,36 +40,34 @@ export async function POST(
         product_data: {
           name: product.name,
         },
-        unit_amount:product.price.toNumber() * 100
+        unit_amount: parseInt(product.price) * 100,
       },
-
     });
   });
 
-  const order = await prisma.order.create({
-    data: {
-      StoreId: params.StoreId,
+  const [order] = await db
+    .insert(orders)
+    .values({
+      storeId: params.StoreId,
       isPaid: false,
-      orderItems: {
-        create:productIds.map((id:string)=>({
-            product:{
-                connect:{
-                    id:id
-                }
-            }
-        }))
-      }
-    },
-  });
+    })
+    .returning();
+
+  await db.insert(orderItems).values(
+    productIds.map((id: string) => ({
+      orderId: order.id,
+      productId: id,
+    }))
+  );
 
   // const coupon_code = await stripe.coupons.create({
   //  percent_off:10,
-   // duration:"repeating",
-   // id:"10OFF"
+  // duration:"repeating",
+  // id:"10OFF"
   //});
   const session = await stripe.checkout.sessions.create({
     line_items: items,
-   // discounts:[{coupon:coupon_code.id}],
+    // discounts:[{coupon:coupon_code.id}],
     mode: "payment",
     billing_address_collection: "required",
     phone_number_collection: {

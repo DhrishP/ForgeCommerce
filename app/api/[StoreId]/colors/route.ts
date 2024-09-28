@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
-
-import prisma from "@/prisma/client";
+import { db } from "@/db/drizzle";
+import { colors, stores } from "@/db/schema";
+import { eq, and } from "drizzle-orm";
 
 export async function POST(
   req: Request,
@@ -28,28 +29,28 @@ export async function POST(
       return new NextResponse("Store id is required", { status: 400 });
     }
 
-    const storeByUserId = await prisma.store.findFirst({
-      where: {
-        id: params.StoreId,
-        userId,
-      },
-    });
+    const storeByUserId = await db
+      .select()
+      .from(stores)
+      .where(and(eq(stores.id, params.StoreId), eq(stores.userId, userId)))
+      .limit(1);
 
-    if (!storeByUserId) {
+    if (storeByUserId.length === 0) {
       return new NextResponse("Unauthorized", { status: 405 });
     }
 
-    const colors = await prisma.colors.create({
-      data: {
+    const newColor = await db
+      .insert(colors)
+      .values({
         name,
         value,
-        StoreId: params.StoreId,
-      },
-    });
+        storeId: params.StoreId,
+      })
+      .returning();
 
-    return NextResponse.json(colors);
+    return NextResponse.json(newColor[0]);
   } catch (error) {
-    console.log("[SIZES_POST]", error);
+    console.log("[COLORS_POST]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
@@ -63,15 +64,14 @@ export async function GET(
       return new NextResponse("Store id is required", { status: 400 });
     }
 
-    const color = await prisma.colors.findMany({
-      where: {
-        StoreId: params.StoreId,
-      },
-    });
+    const colorsData = await db
+      .select()
+      .from(colors)
+      .where(eq(colors.storeId, params.StoreId));
 
-    return NextResponse.json(color);
+    return NextResponse.json(colorsData);
   } catch (error) {
-    console.log("[SIZES_GET]", error);
+    console.log("[COLORS_GET]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
