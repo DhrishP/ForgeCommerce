@@ -9,6 +9,7 @@ import { toast } from "react-hot-toast";
 import { Trash } from "lucide-react";
 import { Categories, Colors, Image, Products, Sizes } from "@prisma/client";
 import { useParams, useRouter } from "next/navigation";
+import ReactMarkdown from "react-markdown";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -36,6 +37,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 const formSchema = z.object({
   name: z.string().min(1),
+  description: z.string().min(1).optional(),
   Image: z.object({ url: z.string() }).array().min(1),
   price: z.coerce.number().min(1),
   CategoriesId: z.string().min(1),
@@ -43,6 +45,7 @@ const formSchema = z.object({
   sizesId: z.string().min(1),
   Featured: z.boolean().default(false).optional(),
   Archived: z.boolean().default(false).optional(),
+  ytURL: z.string().url().optional().or(z.literal("")),
 });
 
 type ProductFormValues = z.infer<typeof formSchema>;
@@ -82,6 +85,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
       }
     : {
         name: "",
+        description: "",
         Image: [],
         price: 0,
         CategoriesId: "",
@@ -89,11 +93,17 @@ export const ProductForm: React.FC<ProductFormProps> = ({
         sizesId: "",
         Featured: false,
         Archived: false,
+        ytURL: "",
       };
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues,
+    defaultValues: {
+      ...defaultValues,
+      description: defaultValues.description || undefined,
+      ytURL: defaultValues.ytURL || undefined,
+      // Convert any other nullable fields to undefined if needed
+    },
   });
 
   const onSubmit = async (data: ProductFormValues) => {
@@ -354,6 +364,49 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                       This product will not appear anywhere in the store.
                     </FormDescription>
                   </div>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <textarea
+                      className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                      disabled={loading}
+                      placeholder="Product description"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                  {field.value && (
+                    <div className="mt-2">
+                      <FormLabel>MarkdownPreview:</FormLabel>
+                      <div className="p-2 border rounded-md">
+                        <ReactMarkdown>{field.value}</ReactMarkdown>
+                      </div>
+                    </div>
+                  )}
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="ytURL"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>YouTube URL</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={loading}
+                      placeholder="https://www.youtube.com/watch?v=..."
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
