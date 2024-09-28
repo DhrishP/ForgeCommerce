@@ -14,6 +14,8 @@ export type FilteredDataProps = {
   size: string;
   color: string;
   createdAt: string;
+  description?: string;
+  ytURL?: string;
 };
 
 export const columns: ColumnDef<FilteredDataProps>[] = [
@@ -36,6 +38,14 @@ export const columns: ColumnDef<FilteredDataProps>[] = [
   {
     accessorKey: "size",
     header: "Size",
+  },
+  {
+    accessorKey: "description",
+    header: "Description",
+  },
+  {
+    accessorKey: "ytURL",
+    header: "Youtube URL",
   },
   {
     accessorKey: "categoryname",

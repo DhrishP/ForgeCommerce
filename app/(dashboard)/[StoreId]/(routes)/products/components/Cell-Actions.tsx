@@ -66,11 +66,11 @@ const CellActions = ({ data }: CellActionsProps) => {
       setOpen(false);
     }
   };
-  const HandleDeFeature = async () =>{
+  const HandleDeFeature = async () => {
     try {
       await axios.patch(`/api/${params.StoreId}/products/${data.id}`, {
-        featured: true,    //USING TRUE HERE INSTEAD OF FALSE CUZ THE FALSE ONE IS USED IN HANDLEARCHIVE SO WE DE-FEATURE A PRODUCT WHEN BOTH ARE TRUE
-        archived: true,  
+        featured: true, //USING TRUE HERE INSTEAD OF FALSE CUZ THE FALSE ONE IS USED IN HANDLEARCHIVE SO WE DE-FEATURE A PRODUCT WHEN BOTH ARE TRUE
+        archived: true,
       });
       toast.success("Product successfully De-featured");
       router.refresh();
@@ -80,7 +80,7 @@ const CellActions = ({ data }: CellActionsProps) => {
       setloading(false);
       setOpen(false);
     }
-  }
+  };
   const HandleArchive = async () => {
     try {
       await axios.patch(`/api/${params.StoreId}/products/${data.id}`, {
@@ -107,7 +107,7 @@ const CellActions = ({ data }: CellActionsProps) => {
     } catch (error) {
       toast.error("Something went wrong");
     }
-  }
+  };
   return (
     <>
       <AlertModal
@@ -157,41 +157,53 @@ const CellActions = ({ data }: CellActionsProps) => {
             Delete
           </DropdownMenuItem>
           <DropdownMenuSub>
-           <DropdownMenuSubTrigger>
-            <Magnet className="h-4 w-4 mr-2"/>
-            Feature
-           </DropdownMenuSubTrigger>
-           <DropdownMenuPortal>
-            <DropdownMenuSubContent className="cursor-pointer">
-              <DropdownMenuItem onClick={()=>{
-                HandleFeature()
-              }}>
-                Feature
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={()=>{HandleDeFeature()}}>
-                De-Feature
-              </DropdownMenuItem>
-            </DropdownMenuSubContent>
-           </DropdownMenuPortal>
-         </DropdownMenuSub>
-         <DropdownMenuSub>
-           <DropdownMenuSubTrigger>
-            <ArchiveRestore className="h-4 w-4 mr-2"/>
-            Archive
-           </DropdownMenuSubTrigger>
-           <DropdownMenuPortal>
-            <DropdownMenuSubContent className="cursor-pointer">
-              <DropdownMenuItem onClick={()=>{
-                HandleArchive()
-              }}>
-                Archive
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={()=>{HandleDearchive()}}>
-                De-Archive
-              </DropdownMenuItem>
-            </DropdownMenuSubContent>
-           </DropdownMenuPortal>
-         </DropdownMenuSub>
+            <DropdownMenuSubTrigger>
+              <Magnet className="h-4 w-4 mr-2" />
+              Feature
+            </DropdownMenuSubTrigger>
+            <DropdownMenuPortal>
+              <DropdownMenuSubContent className="cursor-pointer">
+                <DropdownMenuItem
+                  onClick={() => {
+                    HandleFeature();
+                  }}
+                >
+                  Feature
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    HandleDeFeature();
+                  }}
+                >
+                  De-Feature
+                </DropdownMenuItem>
+              </DropdownMenuSubContent>
+            </DropdownMenuPortal>
+          </DropdownMenuSub>
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>
+              <ArchiveRestore className="h-4 w-4 mr-2" />
+              Archive
+            </DropdownMenuSubTrigger>
+            <DropdownMenuPortal>
+              <DropdownMenuSubContent className="cursor-pointer">
+                <DropdownMenuItem
+                  onClick={() => {
+                    HandleArchive();
+                  }}
+                >
+                  Archive
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    HandleDearchive();
+                  }}
+                >
+                  De-Archive
+                </DropdownMenuItem>
+              </DropdownMenuSubContent>
+            </DropdownMenuPortal>
+          </DropdownMenuSub>
         </DropdownMenuContent>
       </DropdownMenu>
     </>

@@ -27,6 +27,8 @@ const BillboardPage = async ({ params }: { params: { StoreId: string } }) => {
     categoryname: product.categories.name,
     size: product.size.name,
     color: product.color.value,
+    description: product.description?.slice(0, 20) + "..." || "",
+    ytURL: product.ytURL ? new URL(product.ytURL).searchParams.get('v') || '' : '',
     createdAt: product.createdAt.toLocaleDateString(),
   }));
   return (
