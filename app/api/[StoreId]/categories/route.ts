@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
-
-import prisma from "@/prisma/client";
+import { db } from "@/db/drizzle";
+import { categories, stores } from "@/db/schema";
+import { eq, and } from "drizzle-orm";
 
 export async function POST(
   req: Request,
@@ -28,26 +29,26 @@ export async function POST(
       return new NextResponse("Store id is required", { status: 400 });
     }
 
-    const storeByUserId = await prisma.store.findFirst({
-      where: {
-        id: params.StoreId,
-        userId,
-      },
-    });
+    const storeByUserId = await db
+      .select()
+      .from(stores)
+      .where(and(eq(stores.id, params.StoreId), eq(stores.userId, userId)))
+      .limit(1);
 
-    if (!storeByUserId) {
+    if (storeByUserId.length === 0) {
       return new NextResponse("Unauthorized", { status: 405 });
     }
 
-    const categories = await prisma.categories.create({
-      data: {
+    const newCategory = await db
+      .insert(categories)
+      .values({
         name,
         billboardId,
-        StoreId: params.StoreId,
-      },
-    });
+        storeId: params.StoreId,
+      })
+      .returning();
 
-    return NextResponse.json(categories);
+    return NextResponse.json(newCategory[0]);
   } catch (error) {
     console.log("[CATEGORIES_POST]", error);
     return new NextResponse("Internal error", { status: 500 });
@@ -63,13 +64,12 @@ export async function GET(
       return new NextResponse("Store id is required", { status: 400 });
     }
 
-    const categories = await prisma.categories.findMany({
-      where: {
-        StoreId: params.StoreId,
-      },
-    });
+    const categoriesList = await db
+      .select()
+      .from(categories)
+      .where(eq(categories.storeId, params.StoreId));
 
-    return NextResponse.json(categories);
+    return NextResponse.json(categoriesList);
   } catch (error) {
     console.log("[CATEGORIES_GET]", error);
     return new NextResponse("Internal error", { status: 500 });
