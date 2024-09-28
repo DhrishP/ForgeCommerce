@@ -1,6 +1,8 @@
 import { auth } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/prisma/client";
+import { db } from "@/db/drizzle";
+import { billboards, stores } from "@/db/schema";
+import { eq, and } from "drizzle-orm";
 
 export async function GET(
   req: Request,
@@ -9,11 +11,10 @@ export async function GET(
   try {
     if (!params.StoreId)
       return NextResponse.json("Store Id is required", { status: 404 });
-    const FindBillboards = await prisma.billBoard.findMany({
-      where: {
-        StoreId: params.StoreId,
-      },
-    });
+    const FindBillboards = await db
+      .select()
+      .from(billboards)
+      .where(eq(billboards.storeId, params.StoreId));
     return NextResponse.json(FindBillboards);
   } catch (err) {
     console.log(err);
@@ -32,27 +33,27 @@ export async function POST(
     return NextResponse.json("Please provide correct credentials", {
       status: 401,
     });
-  const IsStorevalid = await prisma.store.findFirst({
-    where: {
-      userId: userId,
-      id: params.StoreId,
-    },
-  });
-  if (!IsStorevalid)
+  const IsStorevalid = await db
+    .select()
+    .from(stores)
+    .where(and(eq(stores.userId, userId), eq(stores.id, params.StoreId)))
+    .limit(1);
+  if (IsStorevalid.length === 0)
     return NextResponse.json("Dont change the store id on the Url", {
       status: 404,
     });
 
-  const createBill = await prisma.billBoard.create({
-    data: {
+  const createBill = await db
+    .insert(billboards)
+    .values({
       label: label,
-      ImageUrl: ImageUrl,
-      StoreId: params.StoreId,
-    },
-  });
-  if (createBill) {
-    return NextResponse.json(createBill);
+      imageUrl: ImageUrl,
+      storeId: params.StoreId,
+    })
+    .returning();
+  if (createBill.length > 0) {
+    return NextResponse.json(createBill[0]);
   } else {
-    NextResponse.error();
+    return NextResponse.error();
   }
 }

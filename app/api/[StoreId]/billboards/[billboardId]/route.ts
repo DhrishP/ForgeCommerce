@@ -1,6 +1,9 @@
+import { db } from "@/db/drizzle";
+import { billboards, stores } from "@/db/schema";
 import prisma from "@/prisma/client";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
+import { eq } from "drizzle-orm";
 
 export async function GET(
   req: Request,
@@ -9,11 +12,11 @@ export async function GET(
   try {
     if (!params.billboardId)
       return NextResponse.json("Billboard Id needed", { status: 400 });
-    const Billboard = await prisma.billBoard.findUnique({
-      where: {
-        id: params.billboardId,
-      },
-    });
+
+    const Billboard = await db
+      .select()
+      .from(billboards)
+      .where(eq(billboards.id, params.billboardId));
     if (Billboard) {
       return NextResponse.json(Billboard);
     }
@@ -25,7 +28,7 @@ export async function GET(
 
 export async function PATCH(
   req: Request,
-  { params }: { params: {  StoreId: string,billboardId: string, } }
+  { params }: { params: { StoreId: string; billboardId: string } }
 ) {
   const { userId } = auth();
   const { label, ImageUrl } = await req.json();
@@ -34,23 +37,17 @@ export async function PATCH(
     return NextResponse.json("Check the credentials or authentication", {
       status: 404,
     });
-  const Isvalid = await prisma.store.findFirst({
-    where: {
-      id: params.StoreId,
-      userId,
-    },
-  });
+
+  const Isvalid = await db
+    .select()
+    .from(stores)
+    .where(eq(stores.id, params.StoreId));
   if (!Isvalid) return NextResponse.json("Unauthorized", { status: 403 });
 
-  const UpdateBill = await prisma.billBoard.update({
-    where: {
-      id: params.billboardId,
-    },
-    data: {
-      label: label,
-      ImageUrl: ImageUrl,
-    },
-  });
+  const UpdateBill = await db
+    .update(billboards)
+    .set({ label: label, imageUrl: ImageUrl })
+    .where(eq(billboards.id, params.billboardId));
   if (!UpdateBill)
     return NextResponse.json("Name not updated", { status: 404 });
   return NextResponse.json(UpdateBill);
@@ -58,25 +55,22 @@ export async function PATCH(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { StoreId: string, billboardId: string } }
+  { params }: { params: { StoreId: string; billboardId: string } }
 ) {
   const { userId } = auth();
   if (!userId || !params.StoreId || !params.billboardId)
     return NextResponse.json("Unauthorized", { status: 401 });
-  const Isvalid = await prisma.store.findFirst({
-    where: {
-      id: params.StoreId,
-      userId,
-    },
-  });
+
+  const Isvalid = await db
+    .select()
+    .from(stores)
+    .where(eq(stores.id, params.StoreId));
   if (!Isvalid) return NextResponse.json("Unauthorized", { status: 403 });
-  const DeleteBill = await prisma.billBoard.delete({
-    where: {
-      id: params.billboardId,
-    },
-  });
-  if (DeleteBill) {
-    return NextResponse.json(DeleteBill);
+  const DeleteBillDrizzle = await db
+    .delete(billboards)
+    .where(eq(billboards.id, params.billboardId));
+  if (DeleteBillDrizzle) {
+    return NextResponse.json(DeleteBillDrizzle);
   }
   return NextResponse.error();
 }
