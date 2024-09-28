@@ -1,7 +1,9 @@
 import Navbar from "@/components/modals-and-nav/Navbar";
-import prisma from "@/prisma/client";
+import { db } from "@/db/drizzle";
+import { stores } from "@/db/schema";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
+import { eq } from "drizzle-orm";
 
 export default async function StoreIdLayout({
   children,
@@ -12,13 +14,12 @@ export default async function StoreIdLayout({
 }) {
   const { userId } = auth();
   if (!userId) redirect("/sign-in");
-  const IsStore = await prisma.store.findFirst({
-    where: {
-      id: params.storeId,
-      userId: userId,
-    },
-  });
-  if (!IsStore) redirect("/");
+  const isStore = await db
+    .select()
+    .from(stores)
+    .where(eq(stores.id, params.storeId));
+
+  if (!isStore) redirect("/");
   return (
     <>
       <Navbar />
