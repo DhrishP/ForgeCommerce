@@ -7,7 +7,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { Trash } from "lucide-react";
-import { BillBoard, Categories } from "@prisma/client";
 import { useParams, useRouter } from "next/navigation";
 
 import { Input } from "@/components/ui/input";
@@ -30,6 +29,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { InferSelectModel } from "drizzle-orm";
+import { categories, billboards } from "@/db/schema";
 
 const formSchema = z.object({
   name: z.string().min(2),
@@ -39,8 +40,8 @@ const formSchema = z.object({
 type CategoryFormValues = z.infer<typeof formSchema>;
 
 interface CategoryFormProps {
-  initialData: Categories | null;
-  billboards: BillBoard[];
+  initialData: InferSelectModel<typeof categories> | null;
+  billboards: InferSelectModel<typeof billboards>[];
 }
 
 export const CategoryForm: React.FC<CategoryFormProps> = ({
@@ -60,9 +61,9 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
 
   const form = useForm<CategoryFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData || {
-      name: "",
-      billboardId: "",
+    defaultValues: {
+      name: initialData?.name || "",
+      billboardId: initialData?.billboardId || "",
     },
   });
 
