@@ -20,12 +20,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { useParams, useRouter } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
-import { BillBoard } from "@prisma/client";
+import { billboards } from "@/db/schema";
+import { InferSelectModel } from "drizzle-orm";
 import ImageUpload from "@/components/ui/Image-upload";
 import { AlertModal } from "../../../../../../../components/modals-and-nav/Alert-modal";
 
 type BillBoardFormProps = {
-  initialdata: BillBoard | null;
+  initialdata: InferSelectModel<typeof billboards> | null;
 };
 const formSchema = z.object({
   label: z.string().min(1),

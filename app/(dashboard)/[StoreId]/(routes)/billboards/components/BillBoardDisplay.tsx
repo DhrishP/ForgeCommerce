@@ -4,7 +4,8 @@ import Heading from "@/components/ui/heading";
 import { Plus } from "lucide-react";
 import React, { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { BillBoard } from "@prisma/client";
+import { InferSelectModel } from "drizzle-orm";
+import { billboards } from "@/db/schema";
 import { Separator } from "@/components/ui/separator";
 import { DataTable } from "../../../../../../components/ui/data-table";
 import { columns } from "./TableColumn";
@@ -13,7 +14,7 @@ import axios from "axios";
 import SampleDataModalBill from "@/components/quick-adds/sample-data-bill";
 
 type billboardsprops = {
-  BillboardData: BillBoard[];
+  BillboardData: InferSelectModel<typeof billboards>[];
 };
 const Billboards = ({ BillboardData }: billboardsprops) => {
   const router = useRouter();
@@ -21,9 +22,9 @@ const Billboards = ({ BillboardData }: billboardsprops) => {
   const [billboards, setBillboards] = useState(BillboardData);
   const FilteredData = billboards.map((bill) => ({
     label: bill.label,
-    createdAt: bill.createdAt.toDateString(),
+    createdAt: bill.createdAt ? bill.createdAt.toISOString() : "",
     id: bill.id,
-    ImageUrl: bill.ImageUrl,
+    ImageUrl: bill.imageUrl,
   }));
 
   // useEffect(() => { //future useEffect for state persistent issue
@@ -50,7 +51,9 @@ const Billboards = ({ BillboardData }: billboardsprops) => {
         }
       );
       setBillboards((prevBillboards) =>
-        prevBillboards.filter((billboard) => !ids.includes(billboard.id))
+        prevBillboards.filter(
+          (billboard) => !ids.includes(billboard.id.toString())
+        )
       );
       return "true";
     } catch (err) {
