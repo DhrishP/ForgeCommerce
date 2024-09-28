@@ -27,6 +27,16 @@ const Products = ({ ProductsData }: ProductsProps) => {
             description="Create and manage Products"
           />
         </div>
+        <div>
+          <Button
+            onClick={() => {
+              router.push(`/${params.StoreId}/products/multi-add`);
+            }}
+            className="gap-x-2 hover:bg-secondary hover:text-primary"
+          >
+            <Plus className="h-5 w-4" />
+          Multi Add
+            </Button>  
         <Button
           onClick={() => {
             router.push(`/${params.StoreId}/products/new`);
@@ -36,6 +46,7 @@ const Products = ({ ProductsData }: ProductsProps) => {
           <Plus className="h-5 w-4" />
           New
         </Button>
+        </div>
       </div>
       <Separator />
       <DataTable searchKey="name" columns={columns} data={ProductsData} />
