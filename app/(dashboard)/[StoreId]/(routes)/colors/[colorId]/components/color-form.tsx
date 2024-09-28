@@ -19,11 +19,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { useParams, useRouter } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
-import { Colors } from "@prisma/client";
+import { colors } from "@/db/schema";
 import { AlertModal } from "../../../../../../../components/modals-and-nav/Alert-modal";
+import { InferSelectModel } from "drizzle-orm";
 
 type ColorsFormProps = {
-  initialdata: Colors | null;
+  initialdata: InferSelectModel<typeof colors> | null;
 };
 const formSchema = z.object({
   name: z.string().min(1),
