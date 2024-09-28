@@ -48,6 +48,7 @@
     "react-email": "^1.9.4",
     "react-hook-form": "^7.45.1",
     "react-hot-toast": "^2.4.1",
+    "react-markdown": "^9.0.1",
     "react-spinners": "^0.13.8",
     "recharts": "^2.7.2",
     "stripe": "^12.16.0",

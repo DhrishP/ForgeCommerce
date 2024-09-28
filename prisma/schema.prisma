@@ -88,6 +88,8 @@ model Products {
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
   orderItem    OrderItem[] @relation("ProducttoOrderitem")
+  description  String?
+  ytURL        String?
 }
 
 model Image {
