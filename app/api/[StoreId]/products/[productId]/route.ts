@@ -88,6 +88,8 @@ export async function PUT(
       sizesId,
       Featured,
       Archived,
+      description,
+      ytURL,
     } = body;
 
     if (!userId) {
@@ -148,6 +150,8 @@ export async function PUT(
         },
         Featured,
         Archived,
+        description: description ? description : "",
+        ytURL: ytURL ? ytURL : "",
       },
     });
 

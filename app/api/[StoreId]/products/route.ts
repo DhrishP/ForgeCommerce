@@ -17,6 +17,8 @@ export async function POST(
       sizesId,
       colorId,
       Image,
+      description,
+      ytURL,
     } = await req.json();
 
     if (!userId) {
@@ -76,6 +78,8 @@ export async function POST(
             data: [...Image.map((image: { url: string }) => image)],
           },
         },
+        description: description ? description : "",
+        ytURL: ytURL ? ytURL : "",
       },
     });
     return NextResponse.json(Addproduct);
