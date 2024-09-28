@@ -41,7 +41,7 @@ export function DataTable<TData, TValue>({
   const [rowSelection, setRowSelection] = useState({});
   const [isDeleting, setIsDeleting] = useState(false);
   const { toast } = useToast();
-  const router = useRouter()
+  const router = useRouter();
 
   const allColumns: ColumnDef<TData, TValue>[] = [
     {
@@ -109,7 +109,7 @@ export function DataTable<TData, TValue>({
         description: "Rows deleted successfully",
       });
       setRowSelection({});
-      router.refresh()
+      router.refresh();
     } catch (error) {
       toast({
         title: "Error",
