@@ -1,10 +1,13 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
@@ -12,14 +15,14 @@ model Store {
   id         String       @id @default(cuid())
   name       String
   userId     String
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
   billboard  BillBoard[]  @relation("StoretoBillboards")
   categories Categories[] @relation("StoretoCategories")
-  colors     Colors[]     @relation("StoretoColors")
-  order      Order[]      @relation("StoreToOrder")
-  Products   Products[]   @relation("StoretoProducts")
   sizes      Sizes[]      @relation("StoretoSizes")
+  colors     Colors[]     @relation("StoretoColors")
+  Products   Products[]   @relation("StoretoProducts")
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  order      Order[]      @relation("StoreToOrder")
 }
 
 model BillBoard {
@@ -27,80 +30,82 @@ model BillBoard {
   label      String
   ImageUrl   String
   StoreId    String
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
   store      Store        @relation("StoretoBillboards", fields: [StoreId], references: [id])
   categories Categories[] @relation("BillboardtoCategories")
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
 }
 
 model Categories {
   id          String     @id @default(cuid())
   StoreId     String
+  store       Store      @relation("StoretoCategories", fields: [StoreId], references: [id])
   billboardId String
+  billboard   BillBoard  @relation("BillboardtoCategories", fields: [billboardId], references: [id])
   name        String
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-  store       Store      @relation("StoretoCategories", fields: [StoreId], references: [id])
-  billboard   BillBoard  @relation("BillboardtoCategories", fields: [billboardId], references: [id])
   Products    Products[] @relation("ProducttoCategory")
 }
 
 model Sizes {
   id        String     @id @default(cuid())
   StoreId   String
+  store     Store      @relation("StoretoSizes", fields: [StoreId], references: [id])
   name      String
   value     String
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   Products  Products[] @relation("ProducttoSizes")
-  store     Store      @relation("StoretoSizes", fields: [StoreId], references: [id])
 }
 
 model Colors {
   id        String     @id @default(cuid())
   StoreId   String
+  store     Store      @relation("StoretoColors", fields: [StoreId], references: [id])
   name      String
   value     String
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
-  store     Store      @relation("StoretoColors", fields: [StoreId], references: [id])
   Products  Products[] @relation("ProducttoColor")
 }
 
 model Products {
   id           String      @id @default(cuid())
   StoreId      String
+  store        Store       @relation("StoretoProducts", fields: [StoreId], references: [id])
   CategoriesId String
+  categories   Categories  @relation("ProducttoCategory", fields: [CategoriesId], references: [id])
   sizesId      String
+  size         Sizes       @relation("ProducttoSizes", fields: [sizesId], references: [id])
   colorId      String
+  color        Colors      @relation("ProducttoColor", fields: [colorId], references: [id])
   name         String
   price        Decimal
+  description String?
+  ytURL        String?
   Featured     Boolean     @default(false)
   Archived     Boolean     @default(false)
+  Image        Image[]     @relation("ProducttoImage")
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
-  ytURL        String?
-  description  String?
-  Image        Image[]     @relation("ProducttoImage")
   orderItem    OrderItem[] @relation("ProducttoOrderitem")
-  categories   Categories  @relation("ProducttoCategory", fields: [CategoriesId], references: [id])
-  store        Store       @relation("StoretoProducts", fields: [StoreId], references: [id])
-  color        Colors      @relation("ProducttoColor", fields: [colorId], references: [id])
-  size         Sizes       @relation("ProducttoSizes", fields: [sizesId], references: [id])
 }
 
 model Image {
   id        String   @id @default(cuid())
   productId String
+  product   Products @relation("ProducttoImage", fields: [productId], references: [id], onDelete: Cascade)
   url       String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  product   Products @relation("ProducttoImage", fields: [productId], references: [id], onDelete: Cascade)
 }
 
 model Order {
   id         String      @id @default(cuid())
-  StoreId    String
+  StoreId    String // Foreign Key to Store
+  store      Store       @relation("StoreToOrder", fields: [StoreId], references: [id])
+  orderItems OrderItem[] // Relation to OrderItem model
   name       String      @default("Lorem ipsum")
   Email      String      @default("loremipsum@random.com")
   isPaid     Boolean     @default(false)
@@ -108,14 +113,12 @@ model Order {
   address    String      @default("")
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
-  store      Store       @relation("StoreToOrder", fields: [StoreId], references: [id])
-  orderItems OrderItem[]
 }
 
 model OrderItem {
   id        String   @id @default(cuid())
-  orderId   String
-  productId String
+  orderId   String // Foreign Key to Order
   order     Order    @relation(fields: [orderId], references: [id])
+  productId String // Foreign Key to Product
   product   Products @relation("ProducttoOrderitem", fields: [productId], references: [id])
 }
