@@ -1,33 +1,27 @@
-
-
-import prisma from "@/prisma/client";
 import { CategoryForm } from "./components/catogories-form";
-
+import { eq } from "drizzle-orm";
+import { db } from "@/db/drizzle";
+import { categories, billboards } from "@/db/schema";
 
 const CategoryPage = async ({
-  params
+  params,
 }: {
-  params: { CategoriesId: string, StoreId: string }
+  params: { CategoriesId: string; StoreId: string };
 }) => {
-  const categories = await prisma.categories.findUnique({
-    where: {
-      id: params.CategoriesId
-    }
-  });
+  const findCategories = await db
+    .select()
+    .from(categories)
+    .where(eq(categories.id, params.CategoriesId));
 
-  const billboards = await prisma.billBoard.findMany({
-    where: {
-      StoreId: params.StoreId
-    }
-  });
+  const billboardsData = await db.select().from(billboards).where(eq(billboards.storeId, params.StoreId))
 
-  return ( 
+  return (
     <div className="flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">
-        <CategoryForm billboards={billboards} initialData={categories} />
+        <CategoryForm billboards={billboardsData} initialData={findCategories[0]} />
       </div>
     </div>
   );
-}
+};
 
 export default CategoryPage;

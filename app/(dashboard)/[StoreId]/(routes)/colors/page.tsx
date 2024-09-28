@@ -1,30 +1,27 @@
 import React from "react";
 
-import prisma from "@/prisma/client";
 import Colors from "./components/Colors";
+import { db } from "@/db/drizzle";
+import { colors } from "@/db/schema";
+import { eq, desc } from "drizzle-orm";
 
 const ColorsPage = async ({ params }: { params: { StoreId: string } }) => {
-  const FindColors = await prisma.colors.findMany({
-    where: {
-      StoreId: params.StoreId,
-    },
-    orderBy: {
-      updatedAt: "desc",
-    },
-  });
-  
-  const FilteredData = FindColors.map((color)=>(
-    {
-        id:color.id,
-        name:color.name,
-        value:color.value,
-        createdAt:color.createdAt.toDateString()
-    }
-  ))
+  const FindColors = await db
+    .select()
+    .from(colors)
+    .where(eq(colors.storeId, params.StoreId))
+    .orderBy(desc(colors.updatedAt));
+
+  const FilteredData = FindColors.map((color) => ({
+    id: color.id,
+    name: color.name,
+    value: color.value,
+    createdAt: color.createdAt ? color.createdAt.toDateString() : "",
+  }));
   return (
     <div className="flex flex-col">
       <div className="flex-1 py-6 px-8">
-        <Colors ColorsData={FilteredData}  />
+        <Colors ColorsData={FilteredData} />
       </div>
     </div>
   );

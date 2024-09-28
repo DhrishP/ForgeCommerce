@@ -1,4 +1,6 @@
-import prisma from "@/prisma/client"
+import { db } from "@/db/drizzle";
+import { colors } from "@/db/schema";
+import { eq } from "drizzle-orm";
 import ColorForm from "./components/color-form";
 
 
@@ -7,11 +9,8 @@ const ColorPage = async ({
 }: {
   params: { colorId: string };
 }) => {
-  const color = await prisma.colors.findUnique({
-    where: {
-      id: params.colorId,
-    },
-  });
+
+  const color = await db.select().from(colors).where(eq(colors.id, params.colorId))
 
   return (
     <div className="flex-col">
