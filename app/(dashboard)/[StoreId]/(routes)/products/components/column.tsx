@@ -16,6 +16,7 @@ export type FilteredDataProps = {
   createdAt: string;
   description?: string;
   ytURL?: string;
+  dynamicAttributes: any;
 };
 
 export const columns: ColumnDef<FilteredDataProps>[] = [

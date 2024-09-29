@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
@@ -34,6 +34,7 @@ import {
 } from "@/components/ui/select";
 import ImageUpload from "@/components/ui/Image-upload";
 import { Checkbox } from "@/components/ui/checkbox";
+import DynamicAttributeFields from "@/components/DynamicAttributeFields";
 
 const formSchema = z.object({
   name: z.string().min(1),
@@ -46,6 +47,7 @@ const formSchema = z.object({
   Featured: z.boolean().default(false).optional(),
   Archived: z.boolean().default(false).optional(),
   ytURL: z.string().url().optional().or(z.literal("")),
+  dynamicAttributes: z.record(z.string()),
 });
 
 type ProductFormValues = z.infer<typeof formSchema>;
@@ -72,6 +74,17 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [dynamicAttributes, setDynamicAttributes] = useState([]);
+
+  useEffect(() => {
+    const fetchDynamicAttributes = async () => {
+      const response = await axios.get(
+        `/api/${params.StoreId}/dynamicAttribute`
+      );
+      setDynamicAttributes(response.data);
+    };
+    fetchDynamicAttributes();
+  }, [params.StoreId]);
 
   const title = initialData ? "Edit product" : "Create product";
   const description = initialData ? "Edit a product." : "Add a new product";
@@ -409,6 +422,10 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                   <FormMessage />
                 </FormItem>
               )}
+            />
+            <DynamicAttributeFields
+              control={form.control}
+              dynamicAttributes={dynamicAttributes}
             />
           </div>
           <Button disabled={loading} className="ml-auto" type="submit">
