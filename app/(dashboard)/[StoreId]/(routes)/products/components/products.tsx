@@ -37,6 +37,12 @@ const Products = ({ ProductsData }: ProductsProps) => {
       return "Something went order";
     }
   };
+  const dynamicColumns = Products[0]?.dynamicAttributes
+  ? Object.keys(Products[0].dynamicAttributes).map((key) => ({
+      accessorKey: `dynamicAttributes.${key}`,
+      header: key,
+    }))
+  : [];
 
   return (
     <>
@@ -72,7 +78,7 @@ const Products = ({ ProductsData }: ProductsProps) => {
       <DataTable
         onDeleteSelected={onDeleteSelected}
         searchKey="name"
-        columns={columns}
+        columns={[...columns, ...dynamicColumns]}
         data={Products}
       />
       <div className="w-full mt-10 ml-2">

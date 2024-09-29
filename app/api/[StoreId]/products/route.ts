@@ -19,6 +19,7 @@ export async function POST(
       Image,
       description,
       ytURL,
+      dynamicAttributes,
     } = await req.json();
 
     if (!userId) {
@@ -80,8 +81,19 @@ export async function POST(
         },
         description: description ? description : "",
         ytURL: ytURL ? ytURL : "",
+        dynamicAttributes: {
+          create: dynamicAttributes
+            ? Object.entries(dynamicAttributes).map(([key, value]) => ({
+                dynamicAttribute: {
+                  connect: { id: key },
+                },
+                value: String(value), // Convert value to string
+              }))
+            : undefined
+        },
       },
     });
+
     return NextResponse.json(Addproduct);
   } catch (err) {
     console.log("PRODUCTS_POST", err);
@@ -109,7 +121,6 @@ export async function GET(
         sizesId,
         Featured: Featured ? true : undefined,
         Archived: false,
-        
       },
       include: {
         Image: true,
