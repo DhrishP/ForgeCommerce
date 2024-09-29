@@ -2,12 +2,18 @@
 
 import * as z from "zod";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { Trash } from "lucide-react";
-import { Categories, Colors, Image, Products, Sizes } from "@prisma/client";
+import {
+  Categories,
+  Colors,
+  Image,
+  Products,
+  Sizes,
+} from "@prisma/client";
 import { useParams, useRouter } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 
@@ -34,6 +40,7 @@ import {
 } from "@/components/ui/select";
 import ImageUpload from "@/components/ui/Image-upload";
 import { Checkbox } from "@/components/ui/checkbox";
+import { DynamicPage, DynamicAttribute } from "@prisma/client";
 
 const formSchema = z.object({
   name: z.string().min(1),
@@ -46,6 +53,7 @@ const formSchema = z.object({
   Featured: z.boolean().default(false).optional(),
   Archived: z.boolean().default(false).optional(),
   ytURL: z.string().url().optional().or(z.literal("")),
+  dynamicAttributes: z.record(z.string()),
 });
 
 type ProductFormValues = z.infer<typeof formSchema>;
@@ -72,6 +80,28 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [dynamicAttributes, setDynamicAttributes] = useState<
+    DynamicAttribute[]
+  >([]);
+  const [dynamicPages, setDynamicPages] = useState<DynamicPage[]>([]);
+
+  useEffect(() => {
+    const fetchDynamicPages = async () => {
+      const response = await axios.get(`/api/${params.StoreId}/dynamicPages`);
+      setDynamicPages(response.data);
+    };
+    fetchDynamicPages();
+  }, [params.StoreId]);
+
+  useEffect(() => {
+    const fetchDynamicAttributes = async () => {
+      const response = await axios.get(
+        `/api/${params.StoreId}/dynamicAttribute`
+      );
+      setDynamicAttributes(response.data);
+    };
+    fetchDynamicAttributes();
+  }, [params.StoreId]);
 
   const title = initialData ? "Edit product" : "Create product";
   const description = initialData ? "Edit a product." : "Add a new product";
@@ -410,6 +440,41 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                 </FormItem>
               )}
             />
+            {dynamicPages.map((page) => (
+              <FormField
+                key={page.id}
+                control={form.control}
+                name={`dynamicAttributes.${page.name}`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{page.name}</FormLabel>
+                    <Select
+                      disabled={loading}
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue
+                            defaultValue={field.value}
+                            placeholder={`Select a ${page.name}`}
+                          />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {dynamicAttributes.map((attribute) => (
+                          <SelectItem key={attribute.id} value={attribute.id}>
+                            {attribute.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ))}
           </div>
           <Button disabled={loading} className="ml-auto" type="submit">
             {action}

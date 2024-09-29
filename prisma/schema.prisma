@@ -23,6 +23,7 @@ model Store {
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
   order      Order[]      @relation("StoreToOrder")
+  dynamicPages DynamicPage[] @relation("StoretoDynamicPages")
 }
 
 model BillBoard {
@@ -113,6 +114,22 @@ model Order {
   address    String      @default("")
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
+}
+
+model DynamicPage {
+  id         String   @id @default(cuid())
+  name       String
+  StoreId    String
+  store      Store    @relation("StoretoDynamicPages", fields: [StoreId], references: [id])
+  attributes DynamicAttribute[]
+}
+
+model DynamicAttribute {
+  id            String     @id @default(cuid())
+  name          String
+  type          String
+  DynamicPageId String
+  dynamicPage   DynamicPage @relation(fields: [DynamicPageId], references: [id])
 }
 
 model OrderItem {
