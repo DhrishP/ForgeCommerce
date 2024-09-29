@@ -23,6 +23,7 @@ model Store {
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
   order      Order[]      @relation("StoreToOrder")
+  dynamicAttributes DynamicAttribute[] @relation("StoreToDynamicAttribute")
 }
 
 model BillBoard {
@@ -90,6 +91,7 @@ model Products {
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
   orderItem    OrderItem[] @relation("ProducttoOrderitem")
+  dynamicAttributes ProductDynamicAttribute[]
 }
 
 model Image {
@@ -114,6 +116,29 @@ model Order {
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
 }
+
+model DynamicAttribute {
+  id         String   @id @default(cuid())
+  name       String
+  type       String
+  StoreId    String
+  store      Store    @relation("StoreToDynamicAttribute", fields: [StoreId], references: [id])
+  products   ProductDynamicAttribute[]
+}
+
+model ProductDynamicAttribute {
+  id                 String           @id @default(cuid())
+  productId          String
+  product            Products         @relation(fields: [productId], references: [id])
+  dynamicAttributeId String
+  dynamicAttribute   DynamicAttribute @relation(fields: [dynamicAttributeId], references: [id])
+  value              String
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  @@unique([productId, dynamicAttributeId])
+}
+
 
 model OrderItem {
   id        String   @id @default(cuid())
