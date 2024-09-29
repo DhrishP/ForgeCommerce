@@ -55,9 +55,9 @@ const Products = ({ ProductsData }: ProductsProps) => {
             className="gap-x-2 hover:bg-secondary hover:text-primary"
           >
             <Plus className="h-5 w-4" />
-          Multi Add
+          New
             </Button>  
-        <Button
+        {/* <Button
           onClick={() => {
             router.push(`/${params.StoreId}/products/new`);
           }}
@@ -65,7 +65,7 @@ const Products = ({ ProductsData }: ProductsProps) => {
         >
           <Plus className="h-5 w-4" />
           New
-        </Button>
+        </Button> */}
         </div>
       </div>
       <Separator />
