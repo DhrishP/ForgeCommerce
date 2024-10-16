@@ -120,5 +120,5 @@ model OrderItem {
   orderId   String // Foreign Key to Order
   order     Order    @relation(fields: [orderId], references: [id])
   productId String // Foreign Key to Product
-  product   Products @relation("ProducttoOrderitem", fields: [productId], references: [id])
+  product   Products @relation("ProducttoOrderitem", fields: [productId], references: [id], onDelete: Cascade)
 }
