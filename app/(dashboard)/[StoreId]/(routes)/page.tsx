@@ -16,9 +16,17 @@ import OverviewGraph from "@/components/ui/overview-graph";
 import Sales from "@/components/ui/recent-sales";
 import { Separator } from "@/components/ui/separator";
 import { formatter } from "@/lib/utils";
-import { CreditCard, DollarSign, Shirt } from "lucide-react";
+import {
+  CreditCard,
+  DollarSign,
+  Shirt,
+  ExternalLink,
+  ShoppingCart,
+} from "lucide-react";
 import React from "react";
 import { dataExists } from "@/components/sample-actions/data-exists";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const Dashboard = async ({ params }: { params: { StoreId: string } }) => {
   const sales = await getSales(params.StoreId);
@@ -32,7 +40,19 @@ const Dashboard = async ({ params }: { params: { StoreId: string } }) => {
       <div className="flex flex-row justify-between items-center">
         <Heading title="Dashboard" description="Overview of your store" />
 
-        {dataExist ? <></> : <SampleDataModal />}
+        <div className="flex space-x-4 items-center">
+          {dataExist ? <></> : <SampleDataModal />}
+
+          {params.StoreId === "clkwya8dw0000lb082nevtsqf" && (
+            <Link href="https://forge-ecomm-store.vercel.app" target="_blank">
+              <Button className="bg-gradient-to-r transition-colors from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white flex items-center gap-2">
+                <ShoppingCart className="h-4 w-4" />
+                <span className="hidden sm:inline">View</span> Store
+                <ExternalLink className="h-4 w-4 ml-1" />
+              </Button>
+            </Link>
+          )}
+        </div>
       </div>
       <Separator />
       <div className="grid sm:grid-cols-3 w-full gap-6 mt-2 ">

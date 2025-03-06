@@ -1,8 +1,4 @@
 ## ForgeCommerce is a headless CMS webapp where the user can create,update or delete their necessary data for making cool e-commerce stores with inbuilt payment processing and minimalistic UI
-#### One use of the API can be seen providing all the necessary data to [ecomm-store](https://github.com/dhrishP/ecomm-store)
- ## Dummy Email and password for Demo
-1. _Email_:- trexturbo55@gmail.com
-1. _password_ :- Trex!!@@##
 
 #### ⭐The changes made here can be seen [here](https://ecomm-store-mocha.vercel.app/)
 
