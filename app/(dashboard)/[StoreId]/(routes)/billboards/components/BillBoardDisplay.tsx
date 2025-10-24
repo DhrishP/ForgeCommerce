@@ -25,21 +25,7 @@ const Billboards = ({ BillboardData }: billboardsprops) => {
     id: bill.id,
     ImageUrl: bill.ImageUrl,
   }));
-
-  // useEffect(() => { //future useEffect for state persistent issue
-
-  //   const fetchBillboards = async () => {
-  //     try {
-  //       const response = await axios.get(`/api/${params.StoreId}/billboards`);
-  //       setBillboards(response.data);
-  //     } catch (error) {
-  //       console.error("Failed to fetch billboards:", error);
-  //     }
-  //   };
-
-  //   fetchBillboards();
-  // }, [params.StoreId]);
-
+  
   const onDeleteSelected = async (ids: string[]) => {
     try {
       console.log(ids, "ids deleted");

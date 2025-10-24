@@ -17,8 +17,7 @@ const BillboardPage = async ({ params }: { params: { StoreId: string } }) => {
       updatedAt: "desc",
     },
   });
-// name, price, CategoriesId, Image, colorId, sizesId, Featured, Archived
-  const FilteredData = FindProduct.map((product) => ({
+  const filteredData = FindProduct.map((product) => ({
     id: product.id,
     name: product.name,
     price: formatter.format(product.price.toNumber()),
@@ -34,7 +33,7 @@ const BillboardPage = async ({ params }: { params: { StoreId: string } }) => {
   return (
     <div className="flex flex-col">
       <div className="flex-1 py-6 px-8">
-        <Products ProductsData={FilteredData} />
+        <Products ProductsData={filteredData} />
       </div>
     </div>
   );
