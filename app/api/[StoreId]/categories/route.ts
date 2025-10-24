@@ -13,7 +13,7 @@ export async function POST(
     const { name, billboardId } = await req.json();
 
     if (!userId) {
-      return new NextResponse("Unauthenticated", { status: 403 });
+      return new NextResponse("Unauthenticated", { status: 401 });
     }
 
     if (!name) {
@@ -36,7 +36,7 @@ export async function POST(
     });
 
     if (!storeByUserId) {
-      return new NextResponse("Unauthorized", { status: 405 });
+      return new NextResponse("Unauthorized", { status: 404 });
     }
 
     const categories = await prisma.categories.create({
@@ -49,8 +49,8 @@ export async function POST(
 
     return NextResponse.json(categories);
   } catch (error) {
-    console.log("[CATEGORIES_POST]", error);
-    return new NextResponse("Internal error", { status: 500 });
+    console.error("Error creating category:", error);
+    return new NextResponse("Internal server error", { status: 500 });
   }
 }
 
@@ -67,11 +67,17 @@ export async function GET(
       where: {
         StoreId: params.StoreId,
       },
+      include: {
+        billboard: true,
+      },
+      orderBy: {
+        updatedAt: "desc",
+      },
     });
 
     return NextResponse.json(categories);
   } catch (error) {
-    console.log("[CATEGORIES_GET]", error);
-    return new NextResponse("Internal error", { status: 500 });
+    console.error("Error fetching categories:", error);
+    return new NextResponse("Internal server error", { status: 500 });
   }
 }

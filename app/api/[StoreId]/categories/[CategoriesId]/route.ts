@@ -23,8 +23,8 @@ export async function GET(
   
     return NextResponse.json(categories);
   } catch (error) {
-    console.log('[CATEGORY_GET]', error);
-    return new NextResponse("Internal error", { status: 500 });
+    console.error("Error fetching category:", error);
+    return new NextResponse("Internal server error", { status: 500 });
   }
 };
 
@@ -36,7 +36,7 @@ export async function DELETE(
     const { userId } = auth();
 
     if (!userId) {
-      return new NextResponse("Unauthenticated", { status: 403 });
+      return new NextResponse("Unauthenticated", { status: 401 });
     }
 
     if (!params.CategoriesId) {
@@ -51,7 +51,7 @@ export async function DELETE(
     });
 
     if (!storeByUserId) {
-      return new NextResponse("Unauthorized", { status: 405 });
+      return new NextResponse("Unauthorized", { status: 404 });
     }
 
     const categories = await prisma.categories.delete({
@@ -62,8 +62,8 @@ export async function DELETE(
   
     return NextResponse.json(categories);
   } catch (error) {
-    console.log('[CATEGORY_DELETE]', error);
-    return new NextResponse("Internal error", { status: 500 });
+    console.error("Error deleting category:", error);
+    return new NextResponse("Internal server error", { status: 500 });
   }
 };
 
@@ -80,7 +80,7 @@ export async function PATCH(
     const { name, billboardId } = body;
     
     if (!userId) {
-      return new NextResponse("Unauthenticated", { status: 403 });
+      return new NextResponse("Unauthenticated", { status: 401 });
     }
 
     if (!billboardId) {
@@ -103,7 +103,7 @@ export async function PATCH(
     });
 
     if (!storeByUserId) {
-      return new NextResponse("Unauthorized", { status: 405 });
+      return new NextResponse("Unauthorized", { status: 404 });
     }
 
     const categories = await prisma.categories.update({
@@ -118,7 +118,7 @@ export async function PATCH(
   
     return NextResponse.json(categories);
   } catch (error) {
-    console.log('[CATEGORY_PATCH]', error);
-    return new NextResponse("Internal error", { status: 500 });
+    console.error("Error updating category:", error);
+    return new NextResponse("Internal server error", { status: 500 });
   }
 };

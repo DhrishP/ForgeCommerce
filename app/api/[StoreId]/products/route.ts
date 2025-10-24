@@ -22,7 +22,7 @@ export async function POST(
     } = await req.json();
 
     if (!userId) {
-      return new NextResponse("Unauthenticated", { status: 403 });
+      return new NextResponse("Unauthenticated", { status: 401 });
     }
 
     if (!name) {
@@ -53,17 +53,18 @@ export async function POST(
       return new NextResponse("Store id is required", { status: 400 });
     }
 
-    const StoreByuserId = await prisma.store.findFirst({
+    const store = await prisma.store.findFirst({
       where: {
         id: params.StoreId,
         userId: userId,
       },
     });
 
-    if (!StoreByuserId)
-      return new NextResponse("Unauthorized", { status: 405 });
+    if (!store) {
+      return new NextResponse("Unauthorized", { status: 404 });
+    }
 
-    const Addproduct = await prisma.products.create({
+    const product = await prisma.products.create({
       data: {
         name,
         price,
@@ -79,13 +80,14 @@ export async function POST(
           },
         },
         description: description ? description : "",
-        ytURL: ytURL ? ytURL : "",
+        ytURL: ytURL || "",
       },
     });
-    return NextResponse.json(Addproduct);
-  } catch (err) {
-    console.log("PRODUCTS_POST", err);
-    return new NextResponse("Internal Error", { status: 500 });
+
+    return NextResponse.json(product);
+  } catch (error) {
+    console.error("Error creating product:", error);
+    return new NextResponse("Internal server error", { status: 500 });
   }
 }
 
@@ -121,9 +123,10 @@ export async function GET(
         createdAt: "desc",
       },
     });
+
     return NextResponse.json(products);
-  } catch (err) {
-    console.log("PRODUCT_GET", err);
-    return new NextResponse("Internal Error", { status: 500 });
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    return new NextResponse("Internal server error", { status: 500 });
   }
 }
