@@ -1,0 +1,10 @@
+node_modules
+.next
+.git
+*.md
+*.json
+*.lock
+*.log
+public
+dist
+build
