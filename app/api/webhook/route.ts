@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     address?.country,
   ];
 
-  const addressjoin = addressfilters.filter((c) => c !== null).join(", ");
+  const addressjoin = addressfilters.filter(c => c !== null).join(", ");
 
   if (event.type === "checkout.session.completed") {
     const order = await prisma.order.update({
@@ -48,7 +48,7 @@ export async function POST(req: Request) {
         orderItems: true,
       },
     });
-    const productIds = order.orderItems.map((item) => item.productId);
+    const productIds = order.orderItems.map(item => item.productId);
     await prisma.products.updateMany({
       where: {
         id: {
@@ -59,7 +59,6 @@ export async function POST(req: Request) {
         Archived: true,
       },
     });
-
   }
   return NextResponse.json({}, { status: 200 });
 }

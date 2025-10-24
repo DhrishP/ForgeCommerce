@@ -30,7 +30,7 @@ const Sizes = ({ SizesData }: SizesProps) => {
         }
       );
       console.log(res, "res");
-      setSizes((prev) => prev.filter((item) => !ids.includes(item.id)));
+      setSizes(prev => prev.filter(item => !ids.includes(item.id)));
       return "true";
     } catch (err) {
       console.log(err);

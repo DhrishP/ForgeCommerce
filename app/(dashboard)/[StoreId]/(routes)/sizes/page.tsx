@@ -12,19 +12,17 @@ const SizesPage = async ({ params }: { params: { StoreId: string } }) => {
       updatedAt: "desc",
     },
   });
-  
-  const FilteredData = FindSizes.map((size)=>(
-    {
-        id:size.id,
-        name:size.name,
-        value:size.value,
-        createdAt:size.createdAt.toLocaleDateString()
-    }
-  ))
+
+  const FilteredData = FindSizes.map(size => ({
+    id: size.id,
+    name: size.name,
+    value: size.value,
+    createdAt: size.createdAt.toLocaleDateString(),
+  }));
   return (
     <div className="flex flex-col">
       <div className="flex-1 py-6 px-8">
-        <Sizes SizesData={FilteredData}  />
+        <Sizes SizesData={FilteredData} />
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import prisma from "@/prisma/client";
-import {ProductForm} from "./components/product-form";
+import { ProductForm } from "./components/product-form";
 
 const ProductIdPage = async ({
   params,
@@ -33,7 +33,12 @@ const ProductIdPage = async ({
   return (
     <div className="flex flex-col ">
       <div className="flex-1 px-8 py-6">
-        <ProductForm initialData={product} colors={colors} sizes={sizes} categories={categories} />
+        <ProductForm
+          initialData={product}
+          colors={colors}
+          sizes={sizes}
+          categories={categories}
+        />
       </div>
     </div>
   );

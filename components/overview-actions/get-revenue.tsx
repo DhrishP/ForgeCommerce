@@ -1,6 +1,5 @@
 import prisma from "@/prisma/client";
 
-
 export default async function getRevenue(StoreId: string) {
   if (!StoreId) return null;
 
@@ -13,8 +12,8 @@ export default async function getRevenue(StoreId: string) {
       orderItems: true,
     },
   });
-  const productIds = orders.flatMap((item) =>
-    item.orderItems.map((o) => o.productId)
+  const productIds = orders.flatMap(item =>
+    item.orderItems.map(o => o.productId)
   );
   const findProduct = await prisma.products.findMany({
     where: {

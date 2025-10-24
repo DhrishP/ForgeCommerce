@@ -35,13 +35,13 @@ const StoreDropdown = ({ items = [] }: StoreDropdownItems) => {
   const storemodal = useStoreModal();
   const params = useParams();
   const router = useRouter();
-  const formmattedItems = items.map((item) => ({
+  const formmattedItems = items.map(item => ({
     label: item.name,
     value: item.id,
   }));
 
   const currentStore = formmattedItems.find(
-    (item) => item.value === params.StoreId
+    item => item.value === params.StoreId
   );
   const onStoreSelect = (store: { label: string; value: string }) => {
     setOpen(false);
@@ -67,25 +67,23 @@ const StoreDropdown = ({ items = [] }: StoreDropdownItems) => {
             <CommandEmpty>No Other Store found....</CommandEmpty>
             <CommandInput placeholder="Search store..." />
             <CommandGroup heading="Stores">
-              {formmattedItems.map((item) => (
-             
-                  <CommandItem
-                    key={item.value}
-                    onSelect={() => onStoreSelect(item)}
-                    className="text-sm"
-                  >
-                    <StoreIcon className="h-5 w-4 mr-2" />
-                    {item.label}
-                    <Check
-                      className={cn(
-                        "ml-auto h-4 w-4",
-                        currentStore?.value === item.value
-                          ? "opacity-100"
-                          : "opacity-0"
-                      )}
-                    />
-                  </CommandItem>
-                
+              {formmattedItems.map(item => (
+                <CommandItem
+                  key={item.value}
+                  onSelect={() => onStoreSelect(item)}
+                  className="text-sm"
+                >
+                  <StoreIcon className="h-5 w-4 mr-2" />
+                  {item.label}
+                  <Check
+                    className={cn(
+                      "ml-auto h-4 w-4",
+                      currentStore?.value === item.value
+                        ? "opacity-100"
+                        : "opacity-0"
+                    )}
+                  />
+                </CommandItem>
               ))}
             </CommandGroup>
           </CommandList>

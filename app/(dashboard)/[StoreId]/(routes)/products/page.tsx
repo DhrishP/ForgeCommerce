@@ -17,7 +17,7 @@ const BillboardPage = async ({ params }: { params: { StoreId: string } }) => {
       updatedAt: "desc",
     },
   });
-  const filteredData = FindProduct.map((product) => ({
+  const filteredData = FindProduct.map(product => ({
     id: product.id,
     name: product.name,
     price: formatter.format(product.price.toNumber()),
@@ -27,7 +27,9 @@ const BillboardPage = async ({ params }: { params: { StoreId: string } }) => {
     size: product.size.name,
     color: product.color.value,
     description: product.description?.slice(0, 20) + "..." || "",
-    ytURL: product.ytURL ? new URL(product.ytURL).searchParams.get('v') || '' : '',
+    ytURL: product.ytURL
+      ? new URL(product.ytURL).searchParams.get("v") || ""
+      : "",
     createdAt: product.createdAt.toLocaleDateString(),
   }));
   return (

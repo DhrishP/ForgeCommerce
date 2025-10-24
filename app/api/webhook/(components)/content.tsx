@@ -1,6 +1,5 @@
-
 const Content = () => {
-    return `  <div style="background-color:#f6f9fc;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Ubuntu,sans-serif">
+  return `  <div style="background-color:#f6f9fc;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Ubuntu,sans-serif">
     <table align="center" role="presentation" cellSpacing="0" cellPadding="0" border="0" width="100%" style="max-width:37.5em;background-color:#ffffff;margin:0 auto;padding:20px 0 48px;margin-bottom:64px">
       <tr style="width:100%">
         <td>
@@ -31,6 +30,6 @@ const Content = () => {
   </div>
   <h4 style="color:red;">You won't recieve any emails as the payment was in test mode </h4>
   `;
-  };
-  
-  export default Content;
+};
+
+export default Content;

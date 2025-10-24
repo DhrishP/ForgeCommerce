@@ -7,10 +7,10 @@ interface useStoreModalStore {
 }
 
 //Creating a store
-export const useStoreModal = create<useStoreModalStore>((set) => ({
-    isOpen:false,
-    onOpen:()=> set(({isOpen:true})),
-    onClose:() => set(({isOpen:false}))
+export const useStoreModal = create<useStoreModalStore>(set => ({
+  isOpen: false,
+  onOpen: () => set({ isOpen: true }),
+  onClose: () => set({ isOpen: false }),
 }));
 
 /*

@@ -30,7 +30,7 @@ const Colors = ({ ColorsData }: ColorsProps) => {
         }
       );
       console.log(res, "res");
-      setColors((prev) => prev.filter((item) => !ids.includes(item.id)));
+      setColors(prev => prev.filter(item => !ids.includes(item.id)));
       return "true";
     } catch (err) {
       console.log(err);

@@ -24,7 +24,7 @@ const Orders = ({ OrdersData }: OrdersProps) => {
         }
       );
       console.log(res, "res");
-      setOrders((prev) => prev.filter((item) => !ids.includes(item.id)));
+      setOrders(prev => prev.filter(item => !ids.includes(item.id)));
       return "true";
     } catch (err) {
       console.log(err);

@@ -1,4 +1,3 @@
-
 import prisma from "@/prisma/client";
 import { auth } from "@clerk/nextjs";
 

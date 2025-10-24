@@ -12,19 +12,17 @@ const ColorsPage = async ({ params }: { params: { StoreId: string } }) => {
       updatedAt: "desc",
     },
   });
-  
-  const FilteredData = FindColors.map((color)=>(
-    {
-        id:color.id,
-        name:color.name,
-        value:color.value,
-        createdAt:color.createdAt.toDateString()
-    }
-  ))
+
+  const FilteredData = FindColors.map(color => ({
+    id: color.id,
+    name: color.name,
+    value: color.value,
+    createdAt: color.createdAt.toDateString(),
+  }));
   return (
     <div className="flex flex-col">
       <div className="flex-1 py-6 px-8">
-        <Colors ColorsData={FilteredData}  />
+        <Colors ColorsData={FilteredData} />
       </div>
     </div>
   );

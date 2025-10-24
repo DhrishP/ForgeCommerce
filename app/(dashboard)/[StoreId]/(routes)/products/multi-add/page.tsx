@@ -233,7 +233,7 @@ const BulkProductForm = () => {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            {categories.map((category) => (
+                            {categories.map(category => (
                               <SelectItem key={category.id} value={category.id}>
                                 {category.name}
                               </SelectItem>
@@ -265,7 +265,7 @@ const BulkProductForm = () => {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            {sizes.map((size) => (
+                            {sizes.map(size => (
                               <SelectItem key={size.id} value={size.id}>
                                 {size.name}
                               </SelectItem>
@@ -297,7 +297,7 @@ const BulkProductForm = () => {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            {colors.map((color) => (
+                            {colors.map(color => (
                               <SelectItem key={color.id} value={color.id}>
                                 {color.name}
                               </SelectItem>
@@ -436,15 +436,15 @@ const BulkProductForm = () => {
                         <FormLabel>Images</FormLabel>
                         <FormControl>
                           <ImageUpload
-                            values={field.value.map((image) => image.url)}
+                            values={field.value.map(image => image.url)}
                             disabled={loading}
-                            onChange={(url) =>
+                            onChange={url =>
                               field.onChange([...field.value, { url }])
                             }
-                            onRemove={(url) =>
+                            onRemove={url =>
                               field.onChange([
                                 ...field.value.filter(
-                                  (current) => current.url !== url
+                                  current => current.url !== url
                                 ),
                               ])
                             }

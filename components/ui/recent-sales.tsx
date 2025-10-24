@@ -17,7 +17,7 @@ type SalesProps = {
   data: Data[] | null;
 };
 const Sales = ({ data }: SalesProps) => {
-  if (!data) return null; 
+  if (!data) return null;
   return (
     <Card>
       <CardHeader>
@@ -26,7 +26,7 @@ const Sales = ({ data }: SalesProps) => {
       </CardHeader>
       <CardContent>
         <div className="space-y-8">
-          {data.map((user) => (
+          {data.map(user => (
             <div key={user.id} className="flex items-center">
               <Avatar className="h-9 w-9">
                 <AvatarImage src="/avatars/01.png" alt="Avatar" />

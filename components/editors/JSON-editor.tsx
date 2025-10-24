@@ -93,28 +93,34 @@ const JsonEditorModal: React.FC<JsonEditorModalProps> = ({
   onSubmit,
 }) => {
   const [jsonData, setJsonData] = useState<Record<string, string>>(() =>
-    fields.reduce((acc, field) => {
-      acc[field.name] = field.defaultValue || "{}";
-      return acc;
-    }, {} as Record<string, string>)
+    fields.reduce(
+      (acc, field) => {
+        acc[field.name] = field.defaultValue || "{}";
+        return acc;
+      },
+      {} as Record<string, string>
+    )
   );
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
 
   const [jsonErrors, setJsonErrors] = useState<Record<string, string>>(() =>
-    fields.reduce((acc, field) => {
-      acc[field.name] = "";
-      return acc;
-    }, {} as Record<string, string>)
+    fields.reduce(
+      (acc, field) => {
+        acc[field.name] = "";
+        return acc;
+      },
+      {} as Record<string, string>
+    )
   );
 
   const validateJson = (json: string, fieldName: string) => {
     try {
       JSON.parse(json);
-      setJsonErrors((prev) => ({ ...prev, [fieldName]: "" }));
+      setJsonErrors(prev => ({ ...prev, [fieldName]: "" }));
     } catch (error) {
-      setJsonErrors((prev) => ({
+      setJsonErrors(prev => ({
         ...prev,
         [fieldName]: `Invalid JSON: ${(error as Error).message}`,
       }));
@@ -122,13 +128,13 @@ const JsonEditorModal: React.FC<JsonEditorModalProps> = ({
   };
 
   const handleJsonChange = (newValue: string, fieldName: string) => {
-    setJsonData((prev) => ({ ...prev, [fieldName]: newValue }));
+    setJsonData(prev => ({ ...prev, [fieldName]: newValue }));
     validateJson(newValue, fieldName);
   };
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    if (Object.values(jsonErrors).every((error) => error === "")) {
+    if (Object.values(jsonErrors).every(error => error === "")) {
       const parsedData = Object.fromEntries(
         Object.entries(jsonData).map(([key, value]) => [key, JSON.parse(value)])
       );
@@ -172,14 +178,12 @@ const JsonEditorModal: React.FC<JsonEditorModalProps> = ({
             <div
               className={`grid gap-6 mt-10 ${getGridColumns(fields.length)}`}
             >
-              {fields.map((field) => (
+              {fields.map(field => (
                 <JsonEditor
                   key={field.name}
                   label={field.label}
                   value={jsonData[field.name]}
-                  onChange={(newValue) =>
-                    handleJsonChange(newValue, field.name)
-                  }
+                  onChange={newValue => handleJsonChange(newValue, field.name)}
                   error={jsonErrors[field.name] ? "Invalid JSON" : ""}
                 />
               ))}
@@ -189,7 +193,7 @@ const JsonEditorModal: React.FC<JsonEditorModalProps> = ({
                 type="submit"
                 onClick={handleSubmit}
                 disabled={
-                  Object.values(jsonErrors).some((error) => error !== "") ||
+                  Object.values(jsonErrors).some(error => error !== "") ||
                   isLoading
                 }
                 className="relative"

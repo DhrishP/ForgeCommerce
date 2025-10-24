@@ -8,7 +8,7 @@ import { CldUploadWidget } from "next-cloudinary";
 type ImageUploadProps = {
   disabled: boolean;
   onChange: (value: string) => void;
-  onRemove: (value:string) => void;
+  onRemove: (value: string) => void;
   values: string[];
 };
 const ImageUpload = ({
@@ -33,7 +33,7 @@ const ImageUpload = ({
   return (
     <div>
       <div className="mb-4 flex items-center gap-4 ">
-        {values.map((url) => (
+        {values.map(url => (
           <div key={url} className="relative w-[200px] h-[200px] rounded-lg ">
             <div className="absolute z-10 top-2 right-2">
               <Button

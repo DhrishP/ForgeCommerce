@@ -24,7 +24,7 @@ export default async function getUserinfo(StoreId: string) {
     take: 5,
   });
 
-  const userData = userInfo.map((user) => ({
+  const userData = userInfo.map(user => ({
     id: user.id,
     name: user.name,
     email: user.Email,
@@ -33,7 +33,6 @@ export default async function getUserinfo(StoreId: string) {
     }, 0),
   }));
   if (!userData) return null;
-
 
   return userData;
 }

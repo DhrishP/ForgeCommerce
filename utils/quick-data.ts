@@ -29,14 +29,14 @@ export const defaultSizes = JSON.stringify(
 );
 
 export const defaultBills = JSON.stringify(
-    {
-      "Free Arrivals":
-        "https://res.cloudinary.com/duvuaoxpz/image/upload/v1690808793/ll3rlnvbtto96gnhl5cx.png",
-      "New Arrivals":
-        "https://res.cloudinary.com/duvuaoxpz/image/upload/v1690808807/qj1xmvpabx4stnu4ixk0.png",
-      "Winter Collection":
-        "https://res.cloudinary.com/duvuaoxpz/image/upload/v1690750877/mefshoqkahgpwj7zp3gy.png",
-    },
-    null,
-    2
-  );
+  {
+    "Free Arrivals":
+      "https://res.cloudinary.com/duvuaoxpz/image/upload/v1690808793/ll3rlnvbtto96gnhl5cx.png",
+    "New Arrivals":
+      "https://res.cloudinary.com/duvuaoxpz/image/upload/v1690808807/qj1xmvpabx4stnu4ixk0.png",
+    "Winter Collection":
+      "https://res.cloudinary.com/duvuaoxpz/image/upload/v1690750877/mefshoqkahgpwj7zp3gy.png",
+  },
+  null,
+  2
+);

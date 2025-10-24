@@ -130,7 +130,7 @@ const BillBoardForm = ({ initialdata }: BillBoardFormProps) => {
                   <FormControl>
                     <ImageUpload
                       disabled={loading}
-                      onChange={(url) => {
+                      onChange={url => {
                         field.onChange(url); //Updates the array with the current url
                       }}
                       onRemove={() => {

@@ -1,18 +1,21 @@
-"use client"
-import React, { useEffect, useState } from 'react'
+"use client";
+import React, { useEffect, useState } from "react";
 
 const UseOrigin = () => {
-    const [mounted,isMounted] = useState(false)
-    const origin = typeof window !== "undefined" && window.location.origin?window.location.origin : ''
-    useEffect(()=>{
-        isMounted(true)
-    },[])
+  const [mounted, isMounted] = useState(false);
+  const origin =
+    typeof window !== "undefined" && window.location.origin
+      ? window.location.origin
+      : "";
+  useEffect(() => {
+    isMounted(true);
+  }, []);
 
-    if (!mounted) {
-        return '';
-    }
+  if (!mounted) {
+    return "";
+  }
 
-    return origin
-}
+  return origin;
+};
 
-export default UseOrigin
+export default UseOrigin;

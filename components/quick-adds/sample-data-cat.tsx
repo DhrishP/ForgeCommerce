@@ -13,7 +13,7 @@ type OnSubmitProps = {
 
 const SampleDataModalCat = () => {
   const param = useParams();
-  
+
   const onSubmit = async (data: OnSubmitProps) => {
     const putCategories = await axios.post(
       `/api/${param.StoreId}/multipleCategories`,

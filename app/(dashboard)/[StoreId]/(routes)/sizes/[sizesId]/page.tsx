@@ -1,12 +1,7 @@
 import prisma from "@/prisma/client";
 import SizeForm from "./components/sizes-form";
 
-
-const SizePage = async ({
-  params,
-}: {
-  params: { sizesId: string };
-}) => {
+const SizePage = async ({ params }: { params: { sizesId: string } }) => {
   const sizes = await prisma.sizes.findUnique({
     where: {
       id: params.sizesId,

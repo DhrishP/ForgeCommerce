@@ -30,9 +30,9 @@ export async function POST(
     },
   });
 
-  const items:Stripe.Checkout.SessionCreateParams.LineItem[] = [];
+  const items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
 
-  Findproduct.forEach((product) => {
+  Findproduct.forEach(product => {
     items.push({
       quantity: 1,
       price_data: {
@@ -40,9 +40,8 @@ export async function POST(
         product_data: {
           name: product.name,
         },
-        unit_amount:product.price.toNumber() * 100
+        unit_amount: product.price.toNumber() * 100,
       },
-
     });
   });
 
@@ -51,14 +50,14 @@ export async function POST(
       StoreId: params.StoreId,
       isPaid: false,
       orderItems: {
-        create:productIds.map((id:string)=>({
-            product:{
-                connect:{
-                    id:id
-                }
-            }
-        }))
-      }
+        create: productIds.map((id: string) => ({
+          product: {
+            connect: {
+              id: id,
+            },
+          },
+        })),
+      },
     },
   });
 

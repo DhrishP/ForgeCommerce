@@ -16,7 +16,7 @@ export const columns: ColumnDef<ColorsColumn>[] = [
     accessorKey: "name",
     header: "Name",
   },
- 
+
   {
     accessorKey: "createdAt",
     header: "Date",

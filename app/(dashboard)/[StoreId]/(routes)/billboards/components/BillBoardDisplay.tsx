@@ -19,13 +19,13 @@ const Billboards = ({ BillboardData }: billboardsprops) => {
   const router = useRouter();
   const params = useParams();
   const [billboards, setBillboards] = useState(BillboardData);
-  const FilteredData = billboards.map((bill) => ({
+  const FilteredData = billboards.map(bill => ({
     label: bill.label,
     createdAt: bill.createdAt.toDateString(),
     id: bill.id,
     ImageUrl: bill.ImageUrl,
   }));
-  
+
   const onDeleteSelected = async (ids: string[]) => {
     try {
       console.log(ids, "ids deleted");
@@ -35,8 +35,8 @@ const Billboards = ({ BillboardData }: billboardsprops) => {
           data: { idsArr: ids },
         }
       );
-      setBillboards((prevBillboards) =>
-        prevBillboards.filter((billboard) => !ids.includes(billboard.id))
+      setBillboards(prevBillboards =>
+        prevBillboards.filter(billboard => !ids.includes(billboard.id))
       );
       return "true";
     } catch (err) {

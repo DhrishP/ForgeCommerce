@@ -30,7 +30,7 @@ const Products = ({ ProductsData }: ProductsProps) => {
         }
       );
       console.log(res, "res");
-      setProducts((prev) => prev.filter((item) => !ids.includes(item.id)));
+      setProducts(prev => prev.filter(item => !ids.includes(item.id)));
       return "true";
     } catch (err) {
       console.log(err);
@@ -55,9 +55,9 @@ const Products = ({ ProductsData }: ProductsProps) => {
             className="gap-x-2 hover:bg-secondary hover:text-primary"
           >
             <Plus className="h-5 w-4" />
-          New
-            </Button>  
-        {/* <Button
+            New
+          </Button>
+          {/* <Button
           onClick={() => {
             router.push(`/${params.StoreId}/products/new`);
           }}

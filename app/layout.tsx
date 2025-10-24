@@ -5,13 +5,14 @@ import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ModalProvider } from "@/providers/modal-provider";
 import { ToastProvider } from "@/providers/toast-provider";
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "ForgeCommerce",
-  description: "Admin page for making cool , scalable and production ready e-commerce stores with ForgeCommerce api",
+  description:
+    "Admin page for making cool , scalable and production ready e-commerce stores with ForgeCommerce api",
 };
 
 export default function RootLayout({
@@ -19,16 +20,15 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  
   return (
     <ClerkProvider>
-      <html lang="en" >
+      <html lang="en">
         <body className={inter.className}>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <ToastProvider/>
-          <Toaster />
-          <ModalProvider />
-          {children}
+            <ToastProvider />
+            <Toaster />
+            <ModalProvider />
+            {children}
           </ThemeProvider>
         </body>
       </html>

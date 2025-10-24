@@ -8,12 +8,11 @@ import { ThemeButton } from "./theme-button";
 
 const Navbar = async () => {
   const { userId } = auth();
-  let stores;
   if (!userId) {
     redirect("/sign-in");
   }
 
-  stores = await prisma.store.findMany({
+  const stores = await prisma.store.findMany({
     where: {
       userId: userId,
     },

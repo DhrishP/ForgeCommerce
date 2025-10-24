@@ -34,7 +34,7 @@ export async function POST(
     }
 
     const createdProducts = await prisma.$transaction(
-      products.map((product) => {
+      products.map(product => {
         const {
           name,
           price,
@@ -48,7 +48,15 @@ export async function POST(
           ytURL,
         } = product;
 
-        if (!name || !Image || !Image.length || !price || !CategoriesId || !colorId || !sizesId) {
+        if (
+          !name ||
+          !Image ||
+          !Image.length ||
+          !price ||
+          !CategoriesId ||
+          !colorId ||
+          !sizesId
+        ) {
           throw new Error("Invalid product data");
         }
 
